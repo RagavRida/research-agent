@@ -1,0 +1,5 @@
+{
+  "name": "ARIA - Autonomous Research Intelligence Agent",
+  "description": "A production-grade autonomous research agent dashboard with real-time thinking logs and confidence visualization.",
+  "requestFramePermissions": []
+}
