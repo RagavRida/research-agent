@@ -80,6 +80,25 @@ else:
 # Helpers
 # ═══════════════════════════════════════════════════════════════
 
+
+def sanitize_query(query: str) -> str:
+    """
+    Sanitize user query before injecting into prompt templates.
+
+    - Escapes curly braces to prevent .format() KeyError crashes
+    - Strips excessively long queries to 500 chars
+    - Removes null bytes and control characters
+    """
+    if not query:
+        return "general research overview"
+    # Remove null bytes and control chars (except newlines)
+    query = "".join(c for c in query if c == "\n" or (ord(c) >= 32))
+    # Truncate
+    query = query[:500]
+    # Escape curly braces so .format() doesn't treat them as variables
+    query = query.replace("{", "{{").replace("}", "}}")
+    return query.strip()
+
 def parse_llm_json(response_text: str) -> dict:
     """
     Robustly parse JSON from an LLM response.
@@ -189,7 +208,7 @@ def plan_research(state: AgentState) -> dict:
     try:
         log.info("node.plan_research.start", query=state["query"])
 
-        prompt = PLANNER_PROMPT.format(query=state["query"])
+        prompt = PLANNER_PROMPT.format(query=sanitize_query(state["query"]))
         response = llm_fast.invoke([
             _get_system_message(),
             HumanMessage(content=prompt),
@@ -303,7 +322,7 @@ def execute_search(state: AgentState) -> dict:
         )
 
         prompt = SEARCH_DECISION_PROMPT_V2.format(
-            query=state["query"],
+            query=sanitize_query(state["query"]),
             iteration=state["current_iteration"],
             max_iterations=settings.max_iterations,
             previous_queries=json.dumps(state.get("search_queries_used", [])),
@@ -455,7 +474,7 @@ def evaluate_results(state: AgentState) -> dict:
         )
 
         prompt = EVALUATOR_PROMPT_V2.format(
-            query=state["query"],
+            query=sanitize_query(state["query"]),
             results=results_text,
             iteration=iteration,
             max_iterations=settings.max_iterations,
@@ -639,7 +658,7 @@ def synthesize_results(state: AgentState) -> dict:
         )
 
         prompt = SYNTHESIZER_PROMPT.format(
-            query=state["query"],
+            query=sanitize_query(state["query"]),
             all_results=all_results_text,
             confidence_history=json.dumps(state.get("confidence_history", [])),
             iterations=state["current_iteration"],
