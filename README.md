@@ -15,7 +15,7 @@
 | Resource | Link |
 |----------|------|
 | 📂 **GitHub Repository** | [github.com/jai970/research-agent](https://github.com/jai970/research-agent) |
-| 📊 **Agent Trace Logs** | [ATTACH YOUR LANGSMITH / W&B LOGS OR JSON EXPORTS HERE] |
+| 📊 **Agent Trace Logs** | [`agent_trace.json`](./agent_trace.json) — Raw SSE event stream from a real research run |
 | 🌐 **Live Demo** | `localhost:3000` (frontend) / `localhost:8000` (backend API) |
 
 ---
@@ -416,4 +416,24 @@ research-agent/
 
 ## 📜 License
 
-[INSERT YOUR LICENSE HERE]
+MIT License
+
+Copyright (c) 2024
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
