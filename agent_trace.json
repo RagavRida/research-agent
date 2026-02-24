@@ -1,310 +1,813 @@
 [
-    {
-        "event_type": "step",
-        "data": {
-            "step_id": 1,
-            "type": "plan",
-            "timestamp": "2026-02-24T08:28:44.501152+00:00",
-            "duration_ms": 1355.15,
-            "thinking": "To break down the query into specific, searchable subtasks, we identify core components: 'latest breakthroughs', 'quantum computing', and '2024'. We start broad and then get specific. Based on task requirements, we use web_search for general info, scholar_search for academic papers, and news_search for recent articles.",
-            "action": "Creating research execution plan",
-            "data": {
-                "subtasks": [
-                    {
-                        "id": "T-01",
-                        "task": "Recent news articles on quantum computing breakthroughs in 2024",
-                        "priority": "HIGH",
-                        "tool": "news_search",
-                        "search_query": "quantum computing breakthroughs 2024 news"
-                    },
-                    {
-                        "id": "T-02",
-                        "task": "Academic papers on latest developments in quantum computing in 2024",
-                        "priority": "HIGH",
-                        "tool": "scholar_search",
-                        "search_query": "quantum computing 2024 latest developments academic papers"
-                    },
-                    {
-                        "id": "T-03",
-                        "task": "New technologies and innovations in quantum computing in 2024",
-                        "priority": "MED",
-                        "tool": "web_search",
-                        "search_query": "quantum computing new technologies 2024"
-                    },
-                    {
-                        "id": "T-04",
-                        "task": "Research conferences and events on quantum computing in 2024",
-                        "priority": "LOW",
-                        "tool": "web_search",
-                        "search_query": "quantum computing conferences 2024"
-                    }
-                ],
-                "strategy": "Start with news articles for an overview, then academic papers for depth, then web search for technologies and conferences.",
-                "expected_challenges": [
-                    "Information overload from news articles",
-                    "Difficulty in finding relevant academic papers"
-                ]
-            },
-            "tokens_used": 907
-        }
-    },
-    {
-        "event_type": "step",
-        "data": {
-            "step_id": 2,
-            "type": "search_initial",
-            "timestamp": "2026-02-24T08:28:50.000+00:00",
-            "duration_ms": 5402.89,
-            "thinking": "Starting with a broad web search to establish baseline understanding of quantum computing breakthroughs in 2024.",
-            "action": "Executing web_search: 'latest breakthroughs in quantum computing 2024'",
-            "data": {
-                "query": "latest breakthroughs in quantum computing 2024",
-                "tool": "web_search",
-                "reason": "web_search provides broad coverage for initial research",
-                "targets_gap": "general understanding of quantum computing breakthroughs",
-                "reformulation_strategy": "none",
-                "expected_return": [
-                    "overview of breakthroughs",
-                    "key companies involved"
-                ],
-                "is_retry": false,
-                "results_count": 8,
-                "iteration": 1,
-                "sources": [
-                    {
-                        "url": "https://www.nature.com/articles/quantum-2024",
-                        "title": "Quantum Computing Milestones in 2024",
-                        "source_type": "academic",
-                        "score": 0.92
-                    },
-                    {
-                        "url": "https://www.ibm.com/quantum/roadmap",
-                        "title": "IBM Quantum Roadmap 2024",
-                        "source_type": "official",
-                        "score": 0.88
-                    },
-                    {
-                        "url": "https://arxiv.org/abs/2024.quantum-error",
-                        "title": "Error Correction Breakthrough",
-                        "source_type": "academic",
-                        "score": 0.85
-                    },
-                    {
-                        "url": "https://www.reuters.com/technology/quantum-2024",
-                        "title": "Google's Willow Quantum Chip",
-                        "source_type": "news",
-                        "score": 0.82
-                    },
-                    {
-                        "url": "https://www.wired.com/story/quantum-computing-2024",
-                        "title": "The Year Quantum Computing Got Real",
-                        "source_type": "web",
-                        "score": 0.78
-                    }
-                ]
-            },
-            "tokens_used": 844
-        }
-    },
-    {
-        "event_type": "confidence_update",
-        "data": {
-            "current": 0,
-            "history": [
-                0
-            ],
-            "threshold": 85.0,
-            "passed": false
-        }
-    },
-    {
-        "event_type": "step",
-        "data": {
-            "step_id": 3,
-            "type": "evaluate_retry",
-            "timestamp": "2026-02-24T08:28:55.000+00:00",
-            "duration_ms": 1626.0,
-            "thinking": "I've analyzed 5 sources from my search for 'latest breakthroughs in quantum computing 2024'. My confidence is only 45% — below the 85.0% threshold. I'm missing critical information: specific error correction metrics, no post-2023 statistics. I need to search again with a different strategy.",
-            "action": "Confidence 45% insufficient. Triggering self-correction — reformulating search strategy.",
-            "data": {
-                "confidence": 45,
-                "sources_found": 5,
-                "avg_reliability": 0.85,
-                "threshold_met": false,
-                "decision": "retry",
-                "coverage_score": 20,
-                "reliability_score": 25,
-                "recency_score": 10,
-                "consistency_score": 10,
-                "gaps_identified": [
-                    "no specific error correction rate improvements",
-                    "missing comparison with classical computing benchmarks",
-                    "no sector-specific applications breakdown"
-                ],
-                "what_was_found": "Overview of major quantum computing milestones including Google's Willow chip and IBM's roadmap.",
-                "reformulation_hint": "Target specific quantum error correction metrics and benchmarks using scholar_search",
-                "reformulation_strategy": "narrower",
-                "retry_urgency": "high",
-                "is_retry_moment": true,
-                "query_evaluated": "latest breakthroughs in quantum computing 2024",
-                "iteration": 1,
-                "previous_confidence": 0,
-                "confidence_delta": 45,
-                "threshold": 85.0
-            },
-            "tokens_used": 1205
-        }
-    },
-    {
-        "event_type": "retry_triggered",
-        "data": {
-            "iteration": 1,
-            "confidence": 45,
-            "gaps": [
-                "no specific error correction rate improvements",
-                "missing comparison with classical computing benchmarks"
-            ],
-            "failed_query": "latest breakthroughs in quantum computing 2024",
-            "strategy": "Target specific quantum error correction metrics and benchmarks using scholar_search",
-            "timestamp": "2026-02-24T08:28:55.500+00:00"
-        }
-    },
-    {
-        "event_type": "step",
-        "data": {
-            "step_id": 4,
-            "type": "search_retry",
-            "timestamp": "2026-02-24T08:29:05.000+00:00",
-            "duration_ms": 6100.0,
-            "thinking": "Previous search failed confidence check. Reformulation strategy: narrower. New query 'quantum error correction benchmarks 2024' targets specifically: no specific error correction rate improvements. Switching to scholar_search for better coverage.",
-            "action": "Executing scholar_search: 'quantum error correction benchmarks 2024'",
-            "data": {
-                "query": "quantum error correction benchmarks 2024",
-                "tool": "scholar_search",
-                "reason": "scholar_search targets academic papers with specific metrics",
-                "targets_gap": "no specific error correction rate improvements",
-                "reformulation_strategy": "narrower",
-                "expected_return": [
-                    "error correction rates",
-                    "benchmark comparisons"
-                ],
-                "is_retry": true,
-                "confidence_before": 45,
-                "results_count": 5,
-                "iteration": 2,
-                "sources": [
-                    {
-                        "url": "https://arxiv.org/abs/2024.12345",
-                        "title": "Below-Threshold Error Correction with Surface Codes",
-                        "source_type": "academic",
-                        "score": 0.95
-                    },
-                    {
-                        "url": "https://scholar.google.com/quantum-benchmarks-2024",
-                        "title": "Quantum Advantage Benchmarks: 2024 Survey",
-                        "source_type": "academic",
-                        "score": 0.91
-                    },
-                    {
-                        "url": "https://pubmed.ncbi.nlm.nih.gov/quantum-drug",
-                        "title": "Quantum Computing in Drug Discovery: 2024 Progress",
-                        "source_type": "academic",
-                        "score": 0.87
-                    }
-                ]
-            },
-            "tokens_used": 780
-        }
-    },
-    {
-        "event_type": "confidence_update",
-        "data": {
-            "current": 70,
-            "history": [
-                0,
-                45,
-                70
-            ],
-            "threshold": 85.0,
-            "passed": false
-        }
-    },
-    {
-        "event_type": "gaps_updated",
-        "data": {
-            "gaps": [
-                "missing comparison with classical computing benchmarks",
-                "no sector-specific applications breakdown"
-            ]
-        }
-    },
-    {
-        "event_type": "step",
-        "data": {
-            "step_id": 5,
-            "type": "evaluate_retry",
-            "timestamp": "2026-02-24T08:29:12.000+00:00",
-            "duration_ms": 1800.0,
-            "thinking": "Confidence improved from 45% to 70% after targeting scholar sources. Found error correction benchmarks but still missing sector-specific breakdown. One more targeted search should push us over the threshold.",
-            "action": "Confidence 70% insufficient. Triggering self-correction — reformulating search strategy.",
-            "data": {
-                "confidence": 70,
-                "sources_found": 3,
-                "avg_reliability": 0.91,
-                "threshold_met": false,
-                "decision": "retry",
-                "coverage_score": 30,
-                "reliability_score": 28,
-                "recency_score": 12,
-                "consistency_score": 10,
-                "gaps_identified": [
-                    "no sector-specific applications breakdown"
-                ],
-                "reformulation_hint": "Search for quantum computing industry applications 2024",
-                "reformulation_strategy": "adjacent",
-                "retry_urgency": "medium",
-                "iteration": 2,
-                "previous_confidence": 45,
-                "confidence_delta": 25,
-                "threshold": 85.0
-            },
-            "tokens_used": 1100
-        }
-    },
-    {
-        "event_type": "complete",
-        "data": {
-            "run_id": "trace-demo-001",
-            "status": "force_synthesized",
-            "total_iterations": 3,
-            "confidence": 70,
-            "final_answer": "Quantum computing in 2024 saw three major breakthroughs: (1) Google's Willow chip demonstrated below-threshold error correction for the first time [SOURCE_1], (2) IBM advanced its quantum roadmap with a 1,121-qubit Condor processor [SOURCE_2], (3) Significant progress in quantum error correction with surface codes showing 10x improvement in logical error rates [SOURCE_3].",
-            "citations": [
-                {
-                    "id": "SOURCE_1",
-                    "url": "https://www.reuters.com/technology/quantum-2024",
-                    "title": "Google's Willow Quantum Chip",
-                    "reliability": "HIGH"
-                },
-                {
-                    "id": "SOURCE_2",
-                    "url": "https://www.ibm.com/quantum/roadmap",
-                    "title": "IBM Quantum Roadmap 2024",
-                    "reliability": "HIGH"
-                },
-                {
-                    "id": "SOURCE_3",
-                    "url": "https://arxiv.org/abs/2024.12345",
-                    "title": "Below-Threshold Error Correction with Surface Codes",
-                    "reliability": "HIGH"
-                }
-            ],
-            "caveats": [
-                "Confidence reached 70% (below 85% threshold) — synthesized from best available data",
-                "Sector-specific application breakdown was not fully covered"
-            ],
-            "contradictions_found": [],
-            "duration_ms": 28000.0
-        }
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 1,
+      "type": "plan",
+      "timestamp": "2026-02-24T10:43:19.916256+00:00",
+      "duration_ms": 692.57,
+      "thinking": "Breaking down the query into core components: LangGraph and its functionality. Specific facts needed: definition, architecture, and workflow. To find these facts, we need to start with broad searches and narrow down to specific topics. Web search is suitable for broad topics, scholar search for research papers, and news search for recent developments.",
+      "action": "Creating research execution plan",
+      "data": {
+        "subtasks": [
+          {
+            "id": "T-01",
+            "task": "Define LangGraph and its purpose",
+            "priority": "HIGH",
+            "tool": "web_search",
+            "search_query": "LangGraph definition"
+          },
+          {
+            "id": "T-02",
+            "task": "Identify LangGraph architecture and components",
+            "priority": "MED",
+            "tool": "scholar_search",
+            "search_query": "LangGraph architecture"
+          },
+          {
+            "id": "T-03",
+            "task": "Describe LangGraph workflow and functionality",
+            "priority": "LOW",
+            "tool": "scholar_search",
+            "search_query": "LangGraph workflow"
+          },
+          {
+            "id": "T-04",
+            "task": "Find recent developments and applications of LangGraph",
+            "priority": "LOW",
+            "tool": "news_search",
+            "search_query": "LangGraph recent applications"
+          }
+        ],
+        "strategy": "This research plan starts with a broad web search to understand the definition and purpose of LangGraph. Then, it narrows down to scholarly articles to identify the architecture and workflow. Finally, it uses news search to find recent developments and applications.",
+        "expected_challenges": [
+          "Finding relevant scholarly articles",
+          "Distinguishing between different LangGraph variants"
+        ]
+      },
+      "tokens_used": 789
     }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 2,
+      "type": "search_initial",
+      "timestamp": "2026-02-24T10:43:22.627571+00:00",
+      "duration_ms": 2660.32,
+      "thinking": "Since this is the first iteration, I will start broad to establish a baseline understanding of LangGraph. I will use web_search for general coverage, as it is likely to provide a good overview of the topic.",
+      "action": "Executing web_search: 'LangGraph general overview'",
+      "data": {
+        "query": "LangGraph general overview",
+        "tool": "web_search",
+        "reason": "general coverage and broad understanding",
+        "targets_gap": "baseline understanding of LangGraph",
+        "reformulation_strategy": "broader",
+        "expected_return": [
+          "definition",
+          "purpose",
+          "general features"
+        ],
+        "is_retry": false,
+        "confidence_before": 0,
+        "results_count": 8,
+        "iteration": 1,
+        "previous_confidence": null,
+        "reformulation_hint_used": "",
+        "sources": [
+          {
+            "url": "https://docs.langchain.com/oss/python/langgraph/overview",
+            "title": "LangGraph overview",
+            "source_type": "web",
+            "score": 0.89030397
+          },
+          {
+            "url": "https://medium.com/@shuv.sdr/langgraph-architecture-and-design-280c365aaf2c",
+            "title": "LangGraph \u2014 Architecture and Design",
+            "source_type": "web",
+            "score": 0.8467682
+          },
+          {
+            "url": "https://www.youtube.com/watch?v=qkgW_iwdJ_c",
+            "title": "A Basic Introduction of How to Build AI Agents - YouTube",
+            "source_type": "web",
+            "score": 0.7999589
+          },
+          {
+            "url": "https://www.geeksforgeeks.org/machine-learning/what-is-langgraph/",
+            "title": "What is LangGraph? - GeeksforGeeks",
+            "source_type": "web",
+            "score": 0.780947
+          },
+          {
+            "url": "https://dev.to/jamesli/introduction-to-langgraph-core-concepts-and-basic-components-5bak",
+            "title": "Introduction to LangGraph: Core Concepts and Basic Components",
+            "source_type": "web",
+            "score": 0.7668008
+          },
+          {
+            "url": "https://aws.amazon.com/blogs/machine-learning/build-multi-agent-systems-with-langgraph-and-amazon-bedrock/",
+            "title": "Build multi-agent systems with LangGraph and Amazon Bedrock",
+            "source_type": "web",
+            "score": 0.75027883
+          },
+          {
+            "url": "https://towardsdatascience.com/building-a-langgraph-agent-from-scratch/",
+            "title": "Building a LangGraph Agent from Scratch - Towards Data Science",
+            "source_type": "academic",
+            "score": 0.72884524
+          },
+          {
+            "url": "https://duplocloud.com/blog/langchain-vs-langgraph/",
+            "title": "LangChain vs. LangGraph: A Developer's Guide to Choosing Your ...",
+            "source_type": "web",
+            "score": 0.7144891
+          }
+        ]
+      },
+      "tokens_used": 742
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 1,
+      "confidence": 0,
+      "gaps": [
+        "specific details about LangGraph's architecture",
+        "academic sources for LangGraph"
+      ],
+      "failed_query": "LangGraph general overview",
+      "strategy": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
+      "timestamp": "2026-02-24T10:43:23.495595+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 3,
+      "type": "evaluate_retry",
+      "timestamp": "2026-02-24T10:43:23.495861+00:00",
+      "duration_ms": 815.32,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph general overview'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, academic sources for LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: Target academic sources and use more specific keywords related to LangGraph's architecture and implementation..",
+      "action": "Confidence 0% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 0,
+        "sources_found": 5,
+        "avg_reliability": 0.8,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 10,
+        "consistency_score": 10,
+        "gaps_identified": [
+          "specific details about LangGraph's architecture",
+          "academic sources for LangGraph"
+        ],
+        "what_was_found": "LangGraph is a framework for building stateful, multi-agent applications, with features such as state management, memory, and human-in-the-loop functionality.",
+        "reformulation_hint": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
+        "reformulation_strategy": "source_targeted",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph general overview",
+        "iteration": 1,
+        "previous_confidence": 0,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 4078
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 0,
+      "history": [
+        0
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources for LangGraph",
+        "specific details about LangGraph's architecture"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 4,
+      "type": "search_retry",
+      "timestamp": "2026-02-24T10:43:27.798478+00:00",
+      "duration_ms": 4149.41,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph architecture and implementation details' targets specifically: academic sources for LangGraph and specific details about LangGraph's architecture. This is iteration 2. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph architecture and implementation details'",
+      "data": {
+        "query": "LangGraph architecture and implementation details",
+        "tool": "scholar_search",
+        "reason": "scholar_search is more suitable for academic sources and in-depth information",
+        "targets_gap": "academic sources for LangGraph and specific details about LangGraph's architecture",
+        "reformulation_strategy": "source_targeted",
+        "expected_return": [
+          "academic papers",
+          "technical reports"
+        ],
+        "is_retry": true,
+        "confidence_before": 0,
+        "results_count": 5,
+        "iteration": 2,
+        "previous_confidence": 0,
+        "reformulation_hint_used": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2412.03801v1",
+            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "source_type": "academic",
+            "score": 0.9992206
+          },
+          {
+            "url": "https://arxiv.org/pdf/2509.08646?",
+            "title": "[PDF] Architecting Resilient LLM Agents: A Guide to Secure Plan-then ...",
+            "source_type": "academic",
+            "score": 0.9992022
+          },
+          {
+            "url": "https://arxiv.org/pdf/2411.18241",
+            "title": "[PDF] Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "source_type": "academic",
+            "score": 0.99918324
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v2",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.99896777
+          },
+          {
+            "url": "https://arxiv.org/html/2411.18241v1",
+            "title": "Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "source_type": "academic",
+            "score": 0.99857855
+          }
+        ]
+      },
+      "tokens_used": 806
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 2,
+      "confidence": 60,
+      "gaps": [
+        "specific details about LangGraph's architecture",
+        "practical applications of LangGraph"
+      ],
+      "failed_query": "LangGraph architecture and implementation details",
+      "strategy": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
+      "timestamp": "2026-02-24T10:43:53.102029+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 5,
+      "type": "evaluate_retry",
+      "timestamp": "2026-02-24T10:43:53.102222+00:00",
+      "duration_ms": 25252.14,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph architecture and implementation details'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, practical applications of LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.9987,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 10,
+        "consistency_score": 5,
+        "gaps_identified": [
+          "specific details about LangGraph's architecture",
+          "practical applications of LangGraph"
+        ],
+        "what_was_found": "LangGraph is a graph-based framework for building complex, long-running, and stateful agents. It provides granular control over the application's processes and states, enabling the creation of reliable agents that support advanced human-computer interaction and memory capabilities.",
+        "reformulation_hint": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
+        "reformulation_strategy": "source_targeted",
+        "retry_urgency": "medium",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph architecture and implementation details",
+        "iteration": 2,
+        "previous_confidence": 0,
+        "confidence_delta": 60,
+        "threshold": 85.0
+      },
+      "tokens_used": 3184
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "practical applications of LangGraph",
+        "academic sources for LangGraph",
+        "specific details about LangGraph's architecture"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 6,
+      "type": "search_retry",
+      "timestamp": "2026-02-24T10:44:04.452480+00:00",
+      "duration_ms": 11196.49,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph practical applications in recent research' targets specifically: practical applications of LangGraph. This is iteration 3. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph practical applications in recent research'",
+      "data": {
+        "query": "LangGraph practical applications in recent research",
+        "tool": "scholar_search",
+        "reason": "scholar_search is suitable for finding academic sources and recent research",
+        "targets_gap": "practical applications of LangGraph",
+        "reformulation_strategy": "source_targeted",
+        "expected_return": [
+          "case studies",
+          "examples of LangGraph applications"
+        ],
+        "is_retry": true,
+        "confidence_before": 60,
+        "results_count": 5,
+        "iteration": 3,
+        "previous_confidence": 60,
+        "reformulation_hint_used": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2412.03801v1",
+            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "source_type": "academic",
+            "score": 0.5832277
+          },
+          {
+            "url": "https://arxiv.org/html/2502.18465v1",
+            "title": "Empirical Research on Utilizing LLM-based Agents for Automated ...",
+            "source_type": "academic",
+            "score": 0.5769478
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v2",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.56661874
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v3",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.56661874
+          },
+          {
+            "url": "https://arxiv.org/html/2501.14734v1",
+            "title": "Research on the Application of Spark Streaming Real-Time Data ...",
+            "source_type": "academic",
+            "score": 0.5654673
+          }
+        ]
+      },
+      "tokens_used": 832
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 3,
+      "confidence": 60,
+      "gaps": [
+        "specific details about LangGraph's architecture",
+        "implementation details of LangGraph"
+      ],
+      "failed_query": "LangGraph practical applications in recent research",
+      "strategy": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
+      "timestamp": "2026-02-24T10:44:30.698266+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 7,
+      "type": "evaluate_retry",
+      "timestamp": "2026-02-24T10:44:30.698337+00:00",
+      "duration_ms": 26194.26,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph practical applications in recent research'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, implementation details of LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.576,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 20,
+        "recency_score": 0,
+        "consistency_score": 10,
+        "gaps_identified": [
+          "specific details about LangGraph's architecture",
+          "implementation details of LangGraph"
+        ],
+        "what_was_found": "LangGraph is a graph-based framework that offers a flexible and efficient way to construct agents that can leverage the capabilities of large language models to perform complex tasks. It utilizes a StateGraph class to define a workflow graph, which is used to construct the execution process of an agent.",
+        "reformulation_hint": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph practical applications in recent research",
+        "iteration": 3,
+        "previous_confidence": 60,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3252
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        60,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "practical applications of LangGraph",
+        "academic sources for LangGraph",
+        "implementation details of LangGraph",
+        "specific details about LangGraph's architecture"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 8,
+      "type": "search_retry",
+      "timestamp": "2026-02-24T10:44:41.654027+00:00",
+      "duration_ms": 10802.82,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: adjacent. New query 'LangGraph architecture and implementation details in recent research papers' targets specifically: implementation details of LangGraph. This is iteration 4. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph architecture and implementation details in recent research papers'",
+      "data": {
+        "query": "LangGraph architecture and implementation details in recent research papers",
+        "tool": "scholar_search",
+        "reason": "scholar_search is more suitable for academic research papers and can provide in-depth information on LangGraph's architecture and implementation details",
+        "targets_gap": "implementation details of LangGraph",
+        "reformulation_strategy": "adjacent",
+        "expected_return": [
+          "research papers",
+          "academic sources"
+        ],
+        "is_retry": true,
+        "confidence_before": 60,
+        "results_count": 5,
+        "iteration": 4,
+        "previous_confidence": 60,
+        "reformulation_hint_used": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2411.18241v1",
+            "title": "Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "source_type": "academic",
+            "score": 0.9992084
+          },
+          {
+            "url": "https://arxiv.org/html/2601.12607v1",
+            "title": "A Cloud-based Multi-Agentic Workflow for Science - arXiv",
+            "source_type": "academic",
+            "score": 0.99857855
+          },
+          {
+            "url": "https://arxiv.org/html/2602.11527v1",
+            "title": "A Conversational Multi-Agent System for End-to-End Causal Inference",
+            "source_type": "academic",
+            "score": 0.997851
+          },
+          {
+            "url": "https://arxiv.org/html/2509.00761v2",
+            "title": "L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning ...",
+            "source_type": "academic",
+            "score": 0.9976586
+          },
+          {
+            "url": "https://arxiv.org/html/2506.18783v1",
+            "title": "A Multi-Agent LLM Approach for TRIZ-Based Innovation - arXiv",
+            "source_type": "academic",
+            "score": 0.99758446
+          }
+        ]
+      },
+      "tokens_used": 876
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 4,
+      "confidence": 60,
+      "gaps": [
+        "specific details about LangGraph's architecture and implementation",
+        "core functionality of LangGraph and how it works"
+      ],
+      "failed_query": "LangGraph architecture and implementation details in recent research papers",
+      "strategy": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
+      "timestamp": "2026-02-24T10:45:08.250086+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 9,
+      "type": "evaluate_retry",
+      "timestamp": "2026-02-24T10:45:08.250251+00:00",
+      "duration_ms": 26542.94,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph architecture and implementation details in recent research papers'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture and implementation, core functionality of LangGraph and how it works. I cannot give a reliable answer yet. I need to search again with a different strategy: Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.999,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 0,
+        "consistency_score": 15,
+        "gaps_identified": [
+          "specific details about LangGraph's architecture and implementation",
+          "core functionality of LangGraph and how it works"
+        ],
+        "what_was_found": "LangGraph is a framework designed for constructing multi-agent applications, enabling developers to utilize large language models (LLMs) to create agents and multi-agent workflows. It provides granular control over the application's processes and states, enabling the creation of reliable agents that support advanced human-computer interaction and memory capabilities.",
+        "reformulation_hint": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph architecture and implementation details in recent research papers",
+        "iteration": 4,
+        "previous_confidence": 60,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3179
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        60,
+        60,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources for LangGraph",
+        "core functionality of LangGraph and how it works",
+        "implementation details of LangGraph",
+        "specific details about LangGraph's architecture",
+        "specific details about LangGraph's architecture and implementation",
+        "practical applications of LangGraph"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 10,
+      "type": "search_retry",
+      "timestamp": "2026-02-24T10:45:18.910593+00:00",
+      "duration_ms": 10507.95,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: narrower. New query 'LangGraph core functionality and architecture in recent research papers' targets specifically: core functionality of LangGraph and how it works. This is iteration 5. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph core functionality and architecture in recent research papers'",
+      "data": {
+        "query": "LangGraph core functionality and architecture in recent research papers",
+        "tool": "scholar_search",
+        "reason": "scholar_search is more suitable for academic research and recent papers",
+        "targets_gap": "core functionality of LangGraph and how it works",
+        "reformulation_strategy": "narrower",
+        "expected_return": [
+          "academic sources for LangGraph",
+          "specific details about LangGraph's architecture"
+        ],
+        "is_retry": true,
+        "confidence_before": 60,
+        "results_count": 5,
+        "iteration": 5,
+        "previous_confidence": 60,
+        "reformulation_hint_used": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2411.18241v1",
+            "title": "LLM Multi-Agent Application Implementation - LangGraph+CrewAI",
+            "source_type": "academic",
+            "score": 0.54681134
+          },
+          {
+            "url": "https://arxiv.org/html/2412.03801v1",
+            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "source_type": "academic",
+            "score": 0.51383984
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v4",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.41591915
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v3",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.41591915
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v2",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.41591915
+          }
+        ]
+      },
+      "tokens_used": 885
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 5,
+      "confidence": 0,
+      "gaps": [
+        "specific details about LangGraph's core functionality",
+        "specific details about LangGraph's architecture"
+      ],
+      "failed_query": "LangGraph core functionality and architecture in recent research papers",
+      "strategy": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
+      "timestamp": "2026-02-24T10:45:49.017030+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 11,
+      "type": "evaluate_retry",
+      "timestamp": "2026-02-24T10:45:49.017562+00:00",
+      "duration_ms": 30054.59,
+      "thinking": "I've analyzed 4 sources from my search for 'LangGraph core functionality and architecture in recent research papers'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's core functionality, specific details about LangGraph's architecture. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'..",
+      "action": "Confidence 0% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 0,
+        "sources_found": 4,
+        "avg_reliability": 0.492,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 20,
+        "recency_score": 10,
+        "consistency_score": 5,
+        "gaps_identified": [
+          "specific details about LangGraph's core functionality",
+          "specific details about LangGraph's architecture"
+        ],
+        "what_was_found": "LangGraph is a graph-based framework that offers a flexible and efficient way to construct agents that can leverage the capabilities of large language models. It is used in various applications, including machine translation and workflow management.",
+        "reformulation_hint": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph core functionality and architecture in recent research papers",
+        "iteration": 5,
+        "previous_confidence": 60,
+        "confidence_delta": -60,
+        "threshold": 85.0
+      },
+      "tokens_used": 3446
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 0,
+      "history": [
+        0,
+        60,
+        60,
+        60,
+        0
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources for LangGraph",
+        "implementation details of LangGraph",
+        "practical applications of LangGraph",
+        "specific details about LangGraph's architecture",
+        "specific details about LangGraph's architecture and implementation",
+        "specific details about LangGraph's core functionality",
+        "core functionality of LangGraph and how it works"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 12,
+      "type": "search_retry",
+      "timestamp": "2026-02-24T10:46:00.472096+00:00",
+      "duration_ms": 11298.94,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph core functionality and technical specifications' targets specifically: specific details about LangGraph's core functionality and architecture. This is iteration 6. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph core functionality and technical specifications'",
+      "data": {
+        "query": "LangGraph core functionality and technical specifications",
+        "tool": "scholar_search",
+        "reason": "The reformulation hint suggests targeting academic sources, and scholar_search is more suitable for in-depth technical information.",
+        "targets_gap": "specific details about LangGraph's core functionality and architecture",
+        "reformulation_strategy": "source_targeted",
+        "expected_return": [
+          "technical specifications",
+          "core functionality details"
+        ],
+        "is_retry": true,
+        "confidence_before": 0,
+        "results_count": 5,
+        "iteration": 6,
+        "previous_confidence": 0,
+        "reformulation_hint_used": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2412.01490v2",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "source_type": "academic",
+            "score": 0.98589
+          },
+          {
+            "url": "https://arxiv.org/html/2510.04173v2",
+            "title": "Open Agent Specification (Agent Spec) Technical Report - arXiv.org",
+            "source_type": "academic",
+            "score": 0.98541
+          },
+          {
+            "url": "https://arxiv.org/abs/2412.03801",
+            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "source_type": "academic",
+            "score": 0.98243
+          },
+          {
+            "url": "https://arxiv.org/html/2508.10146v1",
+            "title": "Agentic AI Frameworks: Architectures, Protocols, and Design ...",
+            "source_type": "academic",
+            "score": 0.98202
+          },
+          {
+            "url": "https://arxiv.org/html/2501.11613v3",
+            "title": "A Prompt Engineering Framework for Task-Oriented Dialog Systems",
+            "source_type": "academic",
+            "score": 0.97748
+          }
+        ]
+      },
+      "tokens_used": 924
+    }
+  }
 ]
