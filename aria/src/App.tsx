@@ -1394,19 +1394,30 @@ export default function App() {
         <div className="max-w-6xl mx-auto">
           <div className="flex gap-3 mb-2">
             <div className="flex-1 relative group glow-border rounded-lg bg-slate-900/80 transition-all">
-              <div className="absolute left-4 top-1/2 -translate-y-1/2 text-cyan-500 font-mono font-bold pointer-events-none">
+              <div className="absolute left-4 top-[14px] text-cyan-500 font-mono font-bold pointer-events-none">
                 {'>'}
               </div>
-              <input
-                type="text"
+              <textarea
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && runSimulation()}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  // Auto-resize
+                  e.target.style.height = 'auto';
+                  e.target.style.height = Math.min(e.target.scrollHeight, 160) + 'px';
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    runSimulation();
+                  }
+                }}
                 placeholder="Ask ARIA anything — e.g. Impact of AGI on employment..."
-                className="w-full bg-transparent border-0 rounded-lg py-3.5 pl-10 pr-12 text-sm text-white focus:outline-none placeholder:text-slate-500 font-mono"
+                className="w-full bg-transparent border-0 rounded-lg py-3.5 pl-10 pr-12 text-sm text-white focus:outline-none placeholder:text-slate-500 font-mono resize-none overflow-hidden transition-[height] duration-150 ease-out"
+                style={{ minHeight: '48px' }}
+                rows={1}
                 disabled={isRunning}
               />
-              <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2">
+              <div className="absolute right-3 top-[10px] flex items-center gap-2">
                 <button
                   onClick={resetState}
                   className="p-1.5 rounded text-slate-500 hover:bg-slate-800 hover:text-white transition-all"
