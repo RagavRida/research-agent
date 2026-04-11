@@ -4,9 +4,133 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary SEO Meta Tags -->
+  <title>ARIA — Autonomous Research Intelligence Agent | AI-Powered Research Tool</title>
+  <meta name="description" content="ARIA is a self-correcting AI research agent built on LangGraph. It autonomously plans, searches, evaluates, and synthesizes information with ReAct reasoning and real-time confidence scoring." />
+  <meta name="keywords" content="AI research agent, autonomous research, LangGraph agent, ReAct agent, research automation, AI search tool, ARIA agent, research intelligence, LLM research, Tavily search" />
+  <meta name="author" content="ARIA Research Agent" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://aria-research-agent.vercel.app/" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://aria-research-agent.vercel.app/" />
+  <meta property="og:title" content="ARIA — Autonomous Research Intelligence Agent" />
+  <meta property="og:description" content="Self-correcting AI research agent that autonomously plans, searches, evaluates, and synthesizes information using LangGraph ReAct reasoning with real-time confidence scoring." />
+  <meta property="og:image" content="https://aria-research-agent.vercel.app/og-image.png" />
+  <meta property="og:site_name" content="ARIA Research Agent" />
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:url" content="https://aria-research-agent.vercel.app/" />
+  <meta name="twitter:title" content="ARIA — Autonomous Research Intelligence Agent" />
+  <meta name="twitter:description" content="Self-correcting AI research agent using LangGraph, ReAct reasoning, and Tavily search. Plans, searches, evaluates, and synthesizes with real-time confidence scoring." />
+  <meta name="twitter:image" content="https://aria-research-agent.vercel.app/og-image.png" />
+
+  <!-- Favicon -->
   <link rel="icon" type="image/svg+xml"
-    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>">
-  <title>ARIA — Research Agent</title>
+    href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔬</text></svg>" />
+
+  <!-- JSON-LD: SoftwareApplication Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "ARIA — Autonomous Research Intelligence Agent",
+    "alternateName": "ARIA Research Agent",
+    "description": "A self-correcting, multi-tool AI research agent built on LangGraph that autonomously plans, searches, evaluates, and synthesizes information using ReAct and Plan-and-Execute hybrid reasoning.",
+    "url": "https://aria-research-agent.vercel.app/",
+    "applicationCategory": "ResearchApplication",
+    "operatingSystem": "Web",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "featureList": [
+      "Autonomous research planning with LangGraph StateGraph",
+      "Self-correcting ReAct reasoning loop",
+      "Real-time confidence scoring (0-100)",
+      "Multi-tool search: web, scholar, and news",
+      "Tavily API integration for advanced search",
+      "Streaming SSE API with FastAPI backend",
+      "Contradiction detection and resolution",
+      "Automated citation generation"
+    ],
+    "softwareVersion": "1.0.0",
+    "codeRepository": "https://github.com/jai970/research-agent",
+    "programmingLanguage": ["Python", "TypeScript", "React"],
+    "author": {
+      "@type": "Organization",
+      "name": "ARIA Research Agent",
+      "url": "https://github.com/jai970/research-agent"
+    },
+    "screenshot": "https://aria-research-agent.vercel.app/og-image.png"
+  }
+  </script>
+
+  <!-- JSON-LD: FAQPage Schema (GEO Optimization — +40% AI citation visibility) -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "What is ARIA Research Agent?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ARIA (Autonomous Research Intelligence Agent) is an AI-powered research tool built on LangGraph that uses a hybrid ReAct + Plan-and-Execute pattern. It autonomously decomposes your research query into subtasks, searches across web, scholarly, and news sources using the Tavily API, evaluates results with a confidence score from 0-100, and retries with reformulated strategies when confidence is below 85%."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does ARIA's self-correction work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ARIA's self-correction mechanism uses a closed feedback loop: when the Evaluator node scores confidence below 85%, it produces a specific reformulation hint identifying exactly what information is missing. The Search node then uses this hint to reformulate its query — targeting specific gaps, switching tools from web to scholar if needed, and avoiding previously used queries. This loop repeats for up to 8 iterations before force-synthesizing the best available result."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What search tools does ARIA use?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ARIA uses three Tavily API-powered search tools: web_search (advanced depth, 8 results) for general coverage, scholar_search (filtered to arXiv, PubMed, JSTOR, Semantic Scholar) for academic sources, and news_search (last 90 days, 6 results) for recent developments. The agent dynamically selects the best tool per iteration based on LLM reasoning."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What LLM models power ARIA?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ARIA uses two tiers of LLMs. For fast operations (planning, search decisions, evaluation), it uses Groq's llama-3.1-8b-instant or Google's Gemini 2.0-flash. For final synthesis requiring long-context processing, it uses Groq's llama-3.3-70b-versatile or Google's Gemini 1.5-pro. Users can switch between Groq and Gemini providers via the UI."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is ARIA's confidence score calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "ARIA's confidence score is a weighted composite from 0-100 calculated by the Evaluator node: Coverage of the core question (40 points max), Source reliability — academic > official > news > blog (30 points max), Recency of data (15 points max), and Consistency across sources (15 points max). A score of 85 or above triggers synthesis; below 85 triggers a retry with a reformulated search strategy."
+        }
+      }
+    ]
+  }
+  </script>
+
+  <!-- JSON-LD: Organization Schema -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ARIA Research Agent",
+    "url": "https://aria-research-agent.vercel.app/",
+    "sameAs": ["https://github.com/jai970/research-agent"],
+    "description": "Building autonomous AI research agents with self-correction capabilities using LangGraph and ReAct patterns."
+  }
+  </script>
 </head>
 
 <body>
