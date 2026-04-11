@@ -1,8 +1,33 @@
 # Deployment Guide
 
-## Backend Deployment Options
+## ⚠️ IMPORTANT: Render Configuration
 
-### Option 1: Railway (Recommended - Easiest)
+If you're deploying to Render and getting Rust compilation errors, you MUST:
+
+1. **Use Docker runtime** (not Python)
+2. **Manually configure in Render dashboard** (don't rely on render.yaml auto-detection)
+
+### Render Manual Setup (Recommended):
+
+1. Go to [render.com](https://render.com) and login
+2. Click **"New +"** → **"Web Service"**
+3. Connect your GitHub repo
+4. **IMPORTANT - Manual Configuration:**
+   - **Name**: `research-agent-api`
+   - **Root Directory**: `research_agent`
+   - **Environment**: `Docker`
+   - **Dockerfile Path**: `Dockerfile` (relative to root directory)
+   - **Docker Build Context Directory**: `.` (leave as default)
+5. **Add Environment Variables:**
+   - `GOOGLE_API_KEY` = your Gemini API key
+   - `TAVILY_API_KEY` = your Tavily API key
+6. Click **"Create Web Service"**
+
+This will use Docker and avoid all Rust compilation issues.
+
+---
+
+## Option 1: Railway (Recommended - Easiest)
 
 Railway handles Python dependencies better and has no cold starts on free tier.
 
