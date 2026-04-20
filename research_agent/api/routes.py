@@ -335,15 +335,28 @@ async def get_available_models() -> AvailableModelsResponse:
     active_provider = getattr(nodes_mod, '_active_provider', settings.llm_provider)
     active_model = getattr(nodes_mod, '_active_model', '')
     if not active_model:
-        active_model = (
-            settings.groq_model_fast if active_provider == 'groq'
-            else settings.gemini_model_fast
-        )
+        active_model = {
+            'groq': settings.groq_model_fast,
+            'openrouter': settings.openrouter_model_fast,
+            'gemini': settings.gemini_model_fast,
+        }.get(active_provider, settings.gemini_model_fast)
 
     return AvailableModelsResponse(
         active_provider=active_provider,
         active_model=active_model,
         providers=[
+            {
+                "id": "openrouter",
+                "name": "OpenRouter",
+                "models": [
+                    {"id": "google/gemini-2.0-flash-exp:free", "name": "Gemini 2.0 Flash (free)"},
+                    {"id": "deepseek/deepseek-chat-v3.1:free", "name": "DeepSeek Chat v3.1 (free)"},
+                    {"id": "meta-llama/llama-3.3-70b-instruct:free", "name": "Llama 3.3 70B (free)"},
+                    {"id": "anthropic/claude-3.5-sonnet", "name": "Claude 3.5 Sonnet"},
+                    {"id": "openai/gpt-4o-mini", "name": "GPT-4o mini"},
+                ],
+                "available": bool(settings.openrouter_api_key),
+            },
             {
                 "id": "groq",
                 "name": "Groq",
@@ -394,6 +407,23 @@ async def switch_model(request: ModelSwitchRequest):
             model=model,
             temperature=0.2,
             groq_api_key=settings.groq_api_key,
+        )
+    elif provider == "openrouter":
+        from langchain_openai import ChatOpenAI
+        model = model or settings.openrouter_model_fast
+        _common = {
+            "api_key": settings.openrouter_api_key,
+            "base_url": "https://openrouter.ai/api/v1",
+            "default_headers": {
+                "HTTP-Referer": "https://github.com/RagavRida/research-agent",
+                "X-Title": "ARIA Research Agent",
+            },
+        }
+        nodes_mod.llm_fast = ChatOpenAI(model=model, temperature=0.3, **_common)
+        nodes_mod.llm_pro = ChatOpenAI(
+            model=model or settings.openrouter_model_pro,
+            temperature=0.2,
+            **_common,
         )
     elif provider == "gemini":
         from langchain_google_genai import ChatGoogleGenerativeAI

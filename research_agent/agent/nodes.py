@@ -60,6 +60,32 @@ if settings.llm_provider == "groq":
         temperature=0.2,
         groq_api_key=settings.groq_api_key,
     )
+elif settings.llm_provider == "openrouter":
+    from langchain_openai import ChatOpenAI
+
+    log.info(
+        "llm.provider.openrouter",
+        model_fast=settings.openrouter_model_fast,
+        model_pro=settings.openrouter_model_pro,
+    )
+    _openrouter_common = {
+        "api_key": settings.openrouter_api_key,
+        "base_url": "https://openrouter.ai/api/v1",
+        "default_headers": {
+            "HTTP-Referer": "https://github.com/RagavRida/research-agent",
+            "X-Title": "ARIA Research Agent",
+        },
+    }
+    llm_fast = ChatOpenAI(
+        model=settings.openrouter_model_fast,
+        temperature=0.3,
+        **_openrouter_common,
+    )
+    llm_pro = ChatOpenAI(
+        model=settings.openrouter_model_pro,
+        temperature=0.2,
+        **_openrouter_common,
+    )
 else:
     from langchain_google_genai import ChatGoogleGenerativeAI
 

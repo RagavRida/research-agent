@@ -23,6 +23,15 @@ class Settings(BaseSettings):
     groq_model_fast: str = "llama-3.1-8b-instant"
     groq_model_pro: str = "llama-3.3-70b-versatile"
 
+    # ── OpenRouter Configuration ──
+    openrouter_api_key: str = Field(default="", env="OPENROUTER_API_KEY")
+    openrouter_model_fast: str = Field(
+        default="google/gemini-2.0-flash-exp:free", env="OPENROUTER_MODEL_FAST"
+    )
+    openrouter_model_pro: str = Field(
+        default="deepseek/deepseek-chat-v3.1:free", env="OPENROUTER_MODEL_PRO"
+    )
+
     # ── Tool Configuration ──
     tavily_api_key: str = Field(..., env="TAVILY_API_KEY")
 
