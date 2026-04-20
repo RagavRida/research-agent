@@ -28,7 +28,79 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 
 ---
 
-## 📐 System Architecture Diagram
+## 🏗️ System Architecture
+
+Top-level components and the wire between them. The **browser** only ever talks
+to Vercel (the landing) and Render (the API). Secrets never cross into the
+browser; Postgres, OpenRouter, and Tavily are backend-only.
+
+```mermaid
+flowchart LR
+    Browser["🌐 Browser<br/>React 19 + Vite"]
+
+    subgraph Vercel["☁️ Vercel (static)"]
+        Landing["aria-landing<br/>/, /signin, /signup"]
+    end
+
+    subgraph Render["☁️ Render"]
+        API["FastAPI<br/>Docker · Python 3.11"]
+        DB[("Postgres<br/>managed")]
+    end
+
+    subgraph External["External APIs"]
+        OR["OpenRouter<br/>Gemini · DeepSeek · Llama · Claude · GPT"]
+        TV["Tavily<br/>web · scholar · news"]
+    end
+
+    Browser -- "HTTPS · JWT in localStorage" --> Landing
+    Browser -- "/api/auth/* · /api/research · /api/history<br/>(CORS allow *.vercel.app)" --> API
+    API -- "SQLAlchemy async<br/>asyncpg" --> DB
+    API -- "LangGraph nodes<br/>plan · search · evaluate · synthesize" --> OR
+    API -- "Tavily SDK" --> TV
+
+    classDef edge stroke-dasharray:3 3
+    classDef svc fill:#0f172a,stroke:#22d3ee,color:#e2e8f0
+    classDef db fill:#1e293b,stroke:#a78bfa,color:#e2e8f0
+    class API,Landing svc
+    class DB db
+```
+
+### Request flow — signup → research → history
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant B as Browser
+    participant V as Vercel (landing)
+    participant A as Render (FastAPI)
+    participant P as Postgres
+    participant L as OpenRouter
+    participant T as Tavily
+
+    B->>V: GET / (SPA)
+    B->>A: POST /api/auth/signup {email, password}
+    A->>P: INSERT user (bcrypt hash)
+    A-->>B: 201 {token, user} — JWT stored in localStorage
+
+    B->>A: POST /api/research {query} (Authorization: Bearer …)
+    A->>A: decode JWT → load user
+    loop self-correction loop
+        A->>L: plan · search-decision · evaluate (LLM)
+        A->>T: web_search / scholar_search / news_search
+        A->>A: confidence < 85% → reformulate
+    end
+    A->>L: synthesize (Pro model)
+    A->>P: INSERT query (answer, confidence, citations)
+    A-->>B: 200 ResearchResponse
+
+    B->>A: GET /api/history (Bearer)
+    A->>P: SELECT queries WHERE user_id = …
+    A-->>B: 200 [{id, query, confidence, …}]
+```
+
+---
+
+## 📐 Agent Architecture (internal LangGraph loop)
 
 ```mermaid
 flowchart TB
