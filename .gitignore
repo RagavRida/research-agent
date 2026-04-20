@@ -6,6 +6,13 @@ __pycache__/
 dist/
 build/
 .env
+.venv/
+venv/
+
+# Local dev DBs
+*.db
+*.sqlite
+*.sqlite3
 
 # Node
 node_modules/

@@ -45,7 +45,7 @@ class Settings(BaseSettings):
     jwt_expires_minutes: int = Field(default=60 * 24 * 7, env="JWT_EXPIRES_MINUTES")  # 7 days
 
     # ── CORS ──
-    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:3001", "http://127.0.0.1:5173", "https://aria-omega-liard.vercel.app"]
+    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:3001", "http://localhost:3002", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:3001", "http://127.0.0.1:3002", "http://127.0.0.1:5173", "https://aria-omega-liard.vercel.app"]
 
     class Config:
         env_file = ".env"
