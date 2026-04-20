@@ -20,7 +20,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes import router
+from api.auth_routes import router as auth_router
 from config import settings
+from db import init_db
 from services.logger import configure_logging
 
 import structlog
@@ -53,12 +55,14 @@ app.add_middleware(
 
 # ── Mount API routes ──
 app.include_router(router)
+app.include_router(auth_router)
 
 
 # ── Startup event ──
 @app.on_event("startup")
 async def startup() -> None:
-    """Log agent configuration on server startup."""
+    """Initialise DB and log agent configuration on server startup."""
+    await init_db()
     log.info(
         "nexus.startup",
         model_fast=settings.gemini_model_fast,
@@ -67,6 +71,7 @@ async def startup() -> None:
         confidence_threshold=settings.confidence_threshold,
         min_sources=settings.min_sources_required,
         cors_origins=settings.allowed_origins,
+        database=settings.database_url.split("://", 1)[0],
     )
 
 

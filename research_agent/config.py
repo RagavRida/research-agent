@@ -34,6 +34,16 @@ class Settings(BaseSettings):
     # ── Streaming ──
     stream_delay_ms: int = 50
 
+    # ── Database ──
+    database_url: str = Field(
+        default="sqlite+aiosqlite:///./aria.db", env="DATABASE_URL"
+    )
+
+    # ── JWT ──
+    jwt_secret: str = Field(default="change-me-in-production", env="JWT_SECRET")
+    jwt_algorithm: str = Field(default="HS256", env="JWT_ALGORITHM")
+    jwt_expires_minutes: int = Field(default=60 * 24 * 7, env="JWT_EXPIRES_MINUTES")  # 7 days
+
     # ── CORS ──
     allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:3001", "http://localhost:5173", "http://127.0.0.1:3000", "http://127.0.0.1:3001", "http://127.0.0.1:5173", "https://aria-omega-liard.vercel.app"]
 
