@@ -21,6 +21,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from api.routes import router
 from api.auth_routes import router as auth_router
+from api.history_routes import router as history_router
 from config import settings
 from db import init_db
 from services.logger import configure_logging
@@ -57,6 +58,7 @@ app.add_middleware(
 # ── Mount API routes ──
 app.include_router(router)
 app.include_router(auth_router)
+app.include_router(history_router)
 
 
 # ── Startup event ──

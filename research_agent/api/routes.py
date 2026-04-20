@@ -26,8 +26,13 @@ import asyncio
 from datetime import datetime, timezone
 
 import structlog
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, Depends, HTTPException
 from fastapi.responses import StreamingResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from db import get_session
+from db.models import Query as QueryRow, User
+from services.auth import get_optional_user
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
@@ -201,12 +206,16 @@ def _make_streaming_response(generator):
 # ═══════════════════════════════════════════════════════════════
 
 @router.post("/api/research", response_model=ResearchResponse)
-async def run_research(request: ResearchRequest) -> ResearchResponse:
-    """Run full research agent pipeline synchronously."""
+async def run_research(
+    request: ResearchRequest,
+    current: User | None = Depends(get_optional_user),
+    db: AsyncSession = Depends(get_session),
+) -> ResearchResponse:
+    """Run full research agent pipeline synchronously. Saves to history if the caller is authed."""
     run_id = str(uuid.uuid4())[:8]
     start_time = time.time()
 
-    log.info("api.research.start", run_id=run_id, query=request.query)
+    log.info("api.research.start", run_id=run_id, query=request.query, user=bool(current))
 
     initial_state = _build_initial_state(request.query, request.max_iterations)
     initial_state["run_id"] = run_id
@@ -223,6 +232,26 @@ async def run_research(request: ResearchRequest) -> ResearchResponse:
             iterations=result.get("current_iteration", 0),
             confidence=result.get("final_confidence", 0),
         )
+
+        if current is not None:
+            try:
+                row = QueryRow(
+                    user_id=current.id,
+                    query=request.query,
+                    run_id=run_id,
+                    final_answer=result.get("final_answer"),
+                    confidence=result.get("final_confidence"),
+                    iterations=result.get("current_iteration", 0),
+                    duration_ms=round(total_duration, 2),
+                    citations=result.get("citations", []),
+                    caveats=result.get("caveats", []),
+                    contradictions=result.get("contradictions_found", []),
+                )
+                db.add(row)
+                await db.commit()
+            except Exception as persist_err:  # persistence is best-effort
+                log.warning("api.research.history.save_failed", error=str(persist_err))
+                await db.rollback()
 
         return ResearchResponse(
             run_id=run_id,

@@ -55,7 +55,7 @@ async def get_session() -> AsyncIterator[AsyncSession]:
 
 async def init_db() -> None:
     """Create tables if they don't exist. Called once at startup."""
-    from .models import user  # noqa: F401  register models
+    from .models import user, query  # noqa: F401  register all models
 
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)

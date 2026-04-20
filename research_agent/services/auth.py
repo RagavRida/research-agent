@@ -73,3 +73,19 @@ async def get_current_user(
             status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found"
         )
     return user
+
+
+async def get_optional_user(
+    authorization: str | None = Header(default=None),
+    db: AsyncSession = Depends(get_session),
+) -> User | None:
+    """Auth is optional: returns the user if a valid bearer is present, else None."""
+    if not authorization or not authorization.lower().startswith("bearer "):
+        return None
+    try:
+        token = authorization.split(" ", 1)[1].strip()
+        user_id = decode_token(token)
+    except HTTPException:
+        return None
+    result = await db.execute(select(User).where(User.id == user_id))
+    return result.scalar_one_or_none()

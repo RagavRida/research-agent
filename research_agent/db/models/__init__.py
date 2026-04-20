@@ -1,3 +1,4 @@
 from .user import User
+from .query import Query
 
-__all__ = ["User"]
+__all__ = ["User", "Query"]
