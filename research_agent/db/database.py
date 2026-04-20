@@ -23,8 +23,17 @@ class Base(DeclarativeBase):
     pass
 
 
+def _normalise_async_url(url: str) -> str:
+    """Render/Heroku hand us `postgres://` or `postgresql://`; asyncpg needs `postgresql+asyncpg://`."""
+    if url.startswith("postgres://"):
+        return "postgresql+asyncpg://" + url[len("postgres://") :]
+    if url.startswith("postgresql://") and "+asyncpg" not in url:
+        return "postgresql+asyncpg://" + url[len("postgresql://") :]
+    return url
+
+
 engine = create_async_engine(
-    settings.database_url,
+    _normalise_async_url(settings.database_url),
     echo=False,
     future=True,
     pool_pre_ping=True,
