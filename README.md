@@ -1,7 +1,10 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Track-1-cyan?style=for-the-badge" alt="Track 1"/>
   <img src="https://img.shields.io/badge/LangGraph-Agent-blueviolet?style=for-the-badge" alt="LangGraph"/>
   <img src="https://img.shields.io/badge/ReAct-Self--Correcting-orange?style=for-the-badge" alt="ReAct"/>
+  <img src="https://img.shields.io/badge/FastAPI-0.115-009688?style=for-the-badge&logo=fastapi" alt="FastAPI"/>
+  <img src="https://img.shields.io/badge/JWT-Auth-7f56d9?style=for-the-badge" alt="JWT Auth"/>
+  <img src="https://img.shields.io/badge/Postgres-ready-336791?style=for-the-badge&logo=postgresql" alt="Postgres"/>
+  <img src="https://img.shields.io/github/actions/workflow/status/RagavRida/research-agent/ci.yml?branch=main&style=for-the-badge&label=CI" alt="CI"/>
 </p>
 
 # 🔬 ARIA — Autonomous Research Intelligence Agent
@@ -10,13 +13,18 @@
 
 **ARIA (codename: NEXUS)** implements a genuine **ReAct + Plan-and-Execute hybrid** pattern with **real self-correction**: the agent doesn't just retry — it *reasons about why it failed*, identifies specific knowledge gaps, and reformulates its search strategy accordingly.
 
+This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI backend with JWT auth + Postgres, SSE streaming, pytest + GitHub Actions CI, and a one-click Render deploy.
+
 ---
 
 | Resource | Link |
 |----------|------|
-| 📂 **GitHub Repository** | [github.com/jai970/research-agent](https://github.com/jai970/research-agent) |
-| 📊 **Agent Trace Logs** | [`agent_trace.json`](./agent_trace.json) — Raw SSE event stream from a real research run |
-| 🌐 **Live Demo** | `localhost:3000` (frontend) / `localhost:8000` (backend API) |
+| 📂 **Backend repo** | [github.com/RagavRida/research-agent](https://github.com/RagavRida/research-agent) |
+| 🎨 **Landing repo** | [github.com/RagavRida/aria-landing](https://github.com/RagavRida/aria-landing) |
+| 🌐 **Landing (prod)** | https://aria-landing-one.vercel.app |
+| 🔌 **API (prod)** | https://research-agent-api-u3k9.onrender.com (`/docs` for OpenAPI) |
+| 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real SSE capture from a research run |
+| 🚀 **Deploy your own** | [Render blueprint](https://render.com/deploy?repo=https://github.com/RagavRida/research-agent) |
 
 ---
 
@@ -145,13 +153,18 @@ sequenceDiagram
 | Layer | Technology | Purpose |
 |-------|-----------|---------|
 | **Agent Framework** | LangGraph (StateGraph) | Stateful directed graph with conditional edges |
-| **LLM — Fast** | Groq `llama-3.1-8b-instant` / Gemini `2.0-flash` | Planning, search decisions, evaluation |
-| **LLM — Pro** | Groq `llama-3.3-70b-versatile` / Gemini `1.5-pro` | Final synthesis (long-context) |
+| **LLM — provider** | OpenRouter / Gemini / Groq (hot-swappable) | Single API key via OpenRouter; or direct Gemini/Groq |
+| **LLM — Fast** | `gemini-2.0-flash-exp` / `llama-3.1-8b-instant` | Planning, search decisions, evaluation |
+| **LLM — Pro** | `deepseek-chat-v3.1` / `llama-3.3-70b-versatile` / `gemini-1.5-pro` | Final synthesis (long-context) |
 | **Search Tools** | Tavily API | Web search, scholar search, news search |
-| **Backend** | FastAPI + Uvicorn | SSE streaming API |
-| **Frontend** | React + Vite + TypeScript | Real-time thinking log visualization |
+| **Backend** | FastAPI 0.115 + Uvicorn | SSE streaming + REST |
+| **Auth** | JWT (python-jose) + bcrypt | Email + password, 7-day tokens |
+| **Database** | SQLAlchemy 2.0 async + asyncpg / aiosqlite | Postgres in prod, SQLite in dev |
+| **Frontend** | React 19 + Vite 6 + TypeScript + Tailwind v4 | Landing + auth + live thinking log |
 | **State Management** | LangGraph TypedDict | 25+ typed fields with append-only accumulators |
 | **Logging** | structlog (JSON) | Structured event logging throughout pipeline |
+| **Testing** | pytest + pytest-asyncio + httpx.TestClient | 12 tests, fresh in-memory DB per case |
+| **CI/CD** | GitHub Actions → Render (Docker) + Vercel | Auto-deploy on push to `main` |
 
 ---
 
@@ -356,31 +369,129 @@ ARIA's confidence-gated loop allows the plan to be de-prioritized once the evalu
 
 ## 🚀 Quick Start
 
-### Backend
+### 1. Backend (FastAPI + SQLite dev DB)
 
 ```bash
 cd research_agent
-cp .env.example .env  # Fill in API keys
+cp .env.example .env                 # fill OPENROUTER_API_KEY + TAVILY_API_KEY
+python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python3 main.py       # Starts on :8000
+python3 main.py                      # → http://localhost:8000 (docs at /docs)
 ```
 
-### Frontend
+First boot auto-creates `aria.db` (SQLite) and the `users` table. For Postgres
+in prod, set `DATABASE_URL=postgresql://...` — the driver is normalised
+automatically.
+
+### 2. Frontend — landing (Vite)
+
+Landing lives in [its own repo](https://github.com/RagavRida/aria-landing):
+
+```bash
+git clone https://github.com/RagavRida/aria-landing
+cd aria-landing
+npm install
+echo "VITE_API_BASE_URL=http://localhost:8000" > .env
+npm run dev                          # → http://localhost:3000
+```
+
+### 3. Frontend — research app (existing `aria/` folder)
 
 ```bash
 cd aria
 npm install
-npm run dev           # Starts on :3000 or :5173
+npm run dev                          # → http://localhost:5173
 ```
 
-### Environment Variables
+### Environment variables
 
-```env
-GOOGLE_API_KEY=...          # For Gemini models (optional if using Groq)
-GROQ_API_KEY=...            # For Groq models (free tier available)
-TAVILY_API_KEY=...          # Required — powers all search tools
-LLM_PROVIDER=groq           # "groq" or "gemini"
+All backend config lives in `research_agent/.env`. Full table:
+
+| Variable | Required | Default | Notes |
+|----------|----------|---------|-------|
+| `TAVILY_API_KEY` | ✅ | — | Powers web/scholar/news search. Free 1k/mo at tavily.com |
+| `LLM_PROVIDER` | ✅ | `openrouter` | One of `openrouter` \| `gemini` \| `groq` |
+| `OPENROUTER_API_KEY` | if provider=openrouter | — | Single key for Gemini/DeepSeek/Llama/Claude/GPT |
+| `OPENROUTER_MODEL_FAST` | optional | `google/gemini-2.0-flash-exp:free` | Fast-path model |
+| `OPENROUTER_MODEL_PRO` | optional | `deepseek/deepseek-chat-v3.1:free` | Synthesis model |
+| `GOOGLE_API_KEY` | if provider=gemini | — | From aistudio.google.com/apikey |
+| `GROQ_API_KEY` | if provider=groq | — | From console.groq.com |
+| `DATABASE_URL` | ✅ | `sqlite+aiosqlite:///./aria.db` | Postgres: `postgresql://…` auto-normalised |
+| `JWT_SECRET` | ✅ | `change-me-in-production` | Long random string in prod |
+| `JWT_ALGORITHM` | optional | `HS256` | |
+| `JWT_EXPIRES_MINUTES` | optional | `10080` | 7 days |
+| `PORT` | optional | `8000` | |
+
+---
+
+## 🔐 Auth & Database
+
+Three endpoints sit under `/api/auth/*`:
+
+| Method | Path | Body | Success | Errors |
+|--------|------|------|---------|--------|
+| POST | `/api/auth/signup` | `{email, password, name?}` | `201 {token, user}` | `409` duplicate email, `422` short password |
+| POST | `/api/auth/signin` | `{email, password}` | `200 {token, user}` | `401` bad credentials |
+| GET  | `/api/auth/me` | — (Bearer token) | `200 {id, email, name}` | `401` missing/invalid token |
+
+Passwords are bcrypt-hashed; emails are lower-cased on signup (so `Ada@X.com`
+and `ada@x.com` are the same account). JWTs are HS256, expire in 7 days by
+default, and carry the user UUID as `sub`.
+
+```bash
+# end-to-end smoke
+curl -sX POST localhost:8000/api/auth/signup -H 'Content-Type: application/json' \
+  -d '{"email":"ada@example.com","password":"supersecret1","name":"Ada"}'
+# → {"token":"eyJ…","user":{"id":"…","email":"ada@example.com","name":"Ada"}}
+
+curl -sX GET localhost:8000/api/auth/me -H "Authorization: Bearer $TOKEN"
 ```
+
+---
+
+## 🧪 Testing
+
+```bash
+cd research_agent
+pytest -q
+```
+
+`tests/conftest.py` spins up a fresh in-memory SQLite DB and reloaded app per
+test, so JWT + bcrypt + SQLAlchemy are exercised end-to-end with zero shared
+state. Current coverage:
+
+- `test_auth.py` — 10 cases (signup 201/409/422, signin 200/401×2, me 401×2/200, email case-norm)
+- `test_health.py` — health + agent config smoke
+
+Runs in ~3s; CI does the same on every push to `main` (`.github/workflows/ci.yml`).
+
+---
+
+## ☁️ Deploy
+
+### Backend → Render (one click)
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/RagavRida/research-agent)
+
+The [`render.yaml`](./render.yaml) blueprint provisions:
+- `aria-db` — managed Postgres (free plan)
+- `research-agent-api` — Docker web service with healthcheck at `/api/health`
+- Auto-generated `JWT_SECRET`
+- `DATABASE_URL` wired from the DB's connection string
+- Prompts once for `OPENROUTER_API_KEY` + `TAVILY_API_KEY`
+
+Render auto-deploys on every push to `main`.
+
+### Frontend → Vercel
+
+```bash
+cd aria-landing
+vercel --prod
+# then set VITE_API_BASE_URL to your Render URL in the Vercel dashboard
+```
+
+CORS on the backend already accepts any `*.vercel.app` subdomain via
+`allow_origin_regex`, so preview URLs work without config changes.
 
 ---
 
@@ -389,28 +500,40 @@ LLM_PROVIDER=groq           # "groq" or "gemini"
 ```
 research-agent/
 ├── research_agent/
-│   ├── main.py                 # FastAPI app entry point
-│   ├── config.py               # Pydantic settings (env vars, thresholds)
+│   ├── main.py                 # FastAPI app entry + startup DB init
+│   ├── config.py               # Pydantic settings (env vars, thresholds, JWT, DB)
+│   ├── Dockerfile              # python:3.11-slim → uvicorn
+│   ├── pytest.ini              # asyncio_mode=auto
 │   ├── agent/
 │   │   ├── state.py            # AgentState TypedDict (25+ fields)
 │   │   ├── graph.py            # LangGraph StateGraph definition
-│   │   ├── nodes.py            # 5 node functions + self-correction logic
-│   │   ├── prompts.py          # All 5 prompt templates
+│   │   ├── nodes.py            # 4 node functions + self-correction logic + LLM init
+│   │   ├── prompts.py          # 5 prompt templates
 │   │   └── tools.py            # 3 Tavily search tools + source classifier
 │   ├── api/
-│   │   ├── routes.py           # SSE streaming + model switch endpoints
+│   │   ├── routes.py           # /api/research, SSE stream, model switch
+│   │   ├── auth_routes.py      # /api/auth/signup, /signin, /me
 │   │   └── schemas.py          # Pydantic request/response models
-│   └── services/
-│       ├── evaluator.py        # (Reserved for evaluation service)
-│       ├── synthesizer.py      # (Reserved for synthesis service)
-│       └── logger.py           # Structured logging setup
-├── aria/                       # React frontend
-│   ├── src/
-│   │   ├── App.tsx             # Full UI: thinking log, sources, model switcher
-│   │   └── index.css           # Cyberpunk-themed styling
-│   └── vite.config.ts
-└── .gitignore
+│   ├── db/
+│   │   ├── database.py         # Async SQLA engine + session dep + URL normaliser
+│   │   └── models/user.py      # User table (id, email, name, password_hash, created_at)
+│   ├── services/
+│   │   ├── auth.py             # bcrypt hash, JWT mint/verify, get_current_user dep
+│   │   └── logger.py           # Structured logging
+│   └── tests/                  # pytest — 12 cases, fresh DB per test
+│       ├── conftest.py
+│       ├── test_auth.py
+│       └── test_health.py
+├── aria/                       # React research-app frontend (existing)
+├── .github/workflows/ci.yml    # pytest on every push/PR
+├── render.yaml                 # Render blueprint (Postgres + web service)
+├── agent_trace.json            # Real 27-event SSE capture from one run
+└── README.md
 ```
+
+> The **landing page** lives in a separate repo:
+> [`RagavRida/aria-landing`](https://github.com/RagavRida/aria-landing) — Vite + React + Tailwind v4,
+> wired to this backend via `VITE_API_BASE_URL`.
 
 ---
 
