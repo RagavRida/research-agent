@@ -23,8 +23,8 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 | 🎨 **Landing repo** | [github.com/RagavRida/aria-landing](https://github.com/RagavRida/aria-landing) |
 | 🌐 **Live app (prod)** | https://aria-landing-one.vercel.app — landing + signup + research UI at `/app` |
 | 🔌 **API (prod)** | https://research-agent-production-d1bb.up.railway.app (`/docs` for OpenAPI) — Docker on Railway, also proxied at `/api/*` |
-| 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real SSE capture from a research run |
-| 🚀 **Deploy your own** | [Render blueprint](https://render.com/deploy?repo=https://github.com/RagavRida/research-agent) |
+| 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real 27-event SSE capture showing the self-correction retry loop (5 retries, gap tracking, confidence updates) |
+| 🚀 **Deploy your own** | See [`DEPLOYMENT.md`](./DEPLOYMENT.md) — Railway (Docker backend) + Render (managed Postgres) + Vercel (frontend) |
 
 ---
 
@@ -596,10 +596,12 @@ research-agent/
 │       ├── conftest.py
 │       ├── test_auth.py
 │       └── test_health.py
-├── aria/                       # React research-app frontend (existing)
+├── aria/                       # React research-app (legacy — merged into aria-landing/src/pages/Research.tsx)
 ├── .github/workflows/ci.yml    # pytest on every push/PR
-├── render.yaml                 # Render blueprint (Postgres + web service)
-├── agent_trace.json            # Real 27-event SSE capture from one run
+├── Dockerfile                  # Repo-root Docker build (Railway)
+├── railway.json                # Railway build/healthcheck config
+├── render.yaml                 # Render blueprint — Postgres only
+├── agent_trace.json            # Real 27-event SSE capture (self-correction loop)
 └── README.md
 ```
 
