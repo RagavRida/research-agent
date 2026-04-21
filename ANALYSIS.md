@@ -16,6 +16,7 @@
 | **Hallucinated synthesis** | 🟡 High | During synthesis, the Pro model may interpolate between sources, generating claims not in any source | Synthesizer prompt forces every claim to map to a `[SOURCE_N]` inline citation. The `caveats` field captures low-confidence claims. `[UNVERIFIED]` tagging per system prompt Rule 6. |
 | **Source content fabrication** | 🟠 Medium | LLM may misquote or exaggerate findings from real sources | Not fully mitigated. The agent trusts Tavily's `content` field. A future improvement would be URL content verification via secondary fetch. |
 | **Gap identification hallucination** | 🟠 Medium | Evaluator may fabricate "gaps" to justify unnecessary retries | Partially mitigated by the `reformulation_hint` mechanism — vague gaps like "more data needed" are explicitly discouraged in the prompt. The prompt instructs: 'Not "more data needed" but "no sector-specific breakdown for healthcare."' |
+| **Stale-year queries** | 🟠 Medium | LLMs (Llama 3.3-70B training cutoff ~late 2024) default to their training-corpus year when generating search queries or judging "latest" — producing `<topic> 2024` queries in a 2026 runtime | Mitigated: `_get_system_message()` in `nodes.py` injects `TODAY'S DATE: {ISO}` and `current_year` into the master system prompt on every LLM call, with an explicit instruction to trust today's date over the model's remembered year. |
 
 ### 1.2 Architectural Mitigations
 
@@ -30,7 +31,7 @@
 ### 1.3 Residual Risks (Unmitigated)
 
 - **Prompt injection via search results**: If a Tavily result contains adversarial content designed to manipulate the LLM's evaluation, the agent has no sanitization layer for search result content.
-- **Stale tool data**: Tavily results may contain outdated information that the agent treats as current. The `news_search` tool uses a 90-day window, but `web_search` and `scholar_search` have no recency filter.
+- **Stale tool data**: Tavily results may contain outdated information that the agent treats as current. The `news_search` tool uses a 90-day window, but `web_search` and `scholar_search` have no recency filter. **Partially mitigated** by the date-injection described in Section 1.1 — the LLM now knows the current date and can reject obviously stale results in the evaluator step, though the tool query itself still can't enforce a hard cutoff.
 - **Token truncation**: When `all_search_results` exceeds the Pro model's context window, the synthesis prompt truncates to the first 15 results (`all_results[:15]` in `nodes.py:624`). This may drop the most relevant results found in later iterations.
 
 ---
@@ -152,6 +153,7 @@ With 8 iterations × ~8 results per search × ~200 tokens per result = **~12,800
 | `llama-3.3-70b-versatile` | Rate limits | 100K TPD on free tier. A single research run with 8 iterations can consume 10-15K tokens. ~7 research runs per day before exhaustion. |
 | `gemini-2.0-flash` | Quota exhaustion | Free tier has very low RPM/TPM limits. May hit 429 errors mid-research. |
 | Any model | Tool schema drift | If a model is updated (e.g., Groq updates llama-3.1-8b), the JSON output format may change subtly, breaking `parse_llm_json` expectations. |
+| OpenRouter `:free` tier | Model-ID churn | Free-tier model IDs on OpenRouter get retired on the provider's schedule, not ours. Observed on 2026-04-21: `google/gemini-2.0-flash-exp:free` and `deepseek/deepseek-chat-v3.1:free` both started returning `404 No endpoints found` mid-run, and the agent's error-path output filled the UI. **Mitigation**: Groq is the live default (`LLM_PROVIDER=groq` on Railway); `POST /api/models/switch` lets an operator hot-swap providers without redeploying; `/api/models` lists currently-reachable options so the UI can offer only live choices. |
 
 ---
 
@@ -162,4 +164,15 @@ With 8 iterations × ~8 results per search × ~200 tokens per result = **~12,800
 | **Hallucination** | 🟡 Medium | Source-grounded synthesis, explicit citation requirement, contradiction detection | No URL content verification, no prompt injection defense |
 | **Infinite Loop** | 🟢 Low | `max_iterations=8`, strictly monotonic counter, `force_synthesize` safety node | None — mathematically bounded |
 | **Edge Cases** | 🟡 Medium | Robust JSON parser, per-node error handling, fallback answers | No input validation, no query length limits, no language detection |
-| **Rate Limiting** | 🟠 Medium-High | Multi-provider support (Groq/Gemini), runtime model switching | Free tier limits still constrain throughput |
+| **Rate Limiting** | 🟠 Medium-High | Multi-provider support (Groq/Gemini/OpenRouter), runtime model switching via `/api/models/switch` | Free tier limits still constrain throughput; OpenRouter free model IDs churn (see §3.4) |
+
+---
+
+## 5. Concurrency
+
+The per-user research history feature (`queries` table with `user_id` FK, `POST /api/research` auto-saving when the caller is authed) adds a write path that multiple signed-in users may exercise simultaneously. Assessment:
+
+- **DB access**: every request acquires its own `AsyncSession` via `get_session()` — sessions are not shared across requests. Each research run does a single `INSERT` at completion; no cross-request transactions to deadlock on.
+- **Per-user isolation**: every history query filters on `Query.user_id == current.id` (`api/history_routes.py`), and the detail/delete endpoints 404 rather than leak rows owned by another user. Verified by `tests/test_history.py::test_history_list_and_isolation` and `::test_history_detail_404_for_other_users_row`.
+- **LLM client contention**: `llm_fast` and `llm_pro` are module-level singletons in `agent/nodes.py`. Concurrent requests reuse the same client objects, which is safe for `langchain-openai` but means a burst of signed-in users competing for the same Groq rate limit bucket — a request is the contended resource, not the Python client.
+- **Residual risk**: if two requests from the same user race to write a new `queries` row, ordering is whatever Postgres assigns; `created_at` is the authoritative timestamp and history listing orders by `desc(created_at)`, so out-of-order inserts still present coherently in the UI.
