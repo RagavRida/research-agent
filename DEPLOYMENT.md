@@ -63,7 +63,23 @@ databases:
 
 One-click provision: connect this repo in the Render dashboard and deploy the blueprint. Grab the external connection string from the database's dashboard page and set it as `DATABASE_URL` on the Railway service.
 
-Note: Render free Postgres expires 90 days after creation. For a longer-lived demo, swap to Railway Postgres (`railway add --database postgres`, requires a paid plan) or any external provider — change `DATABASE_URL` and redeploy.
+> **⚠️ Render free Postgres expires 30 days after creation.** The live
+> database was provisioned on 2026-04-20 and will hit `status: expired`
+> on **2026-05-20**. After that date the backend will 500 on any
+> authed route until `DATABASE_URL` is pointed elsewhere. Migration
+> options in order of effort:
+>
+> 1. **Extend on Render** — upgrade the same database to a paid plan
+>    (~$7/mo) from the Render dashboard; no URL change needed.
+> 2. **Move to Railway Postgres** — `railway add --database postgres`
+>    (requires Railway paid plan), copy the new `DATABASE_URL`, dump
+>    + restore with `pg_dump | psql`, then `railway variable --set`.
+> 3. **Any external Postgres** — Neon, Supabase, or an old DO
+>    droplet all work; just update `DATABASE_URL`.
+>
+> The schema is two tables (`users`, `queries`); `init_db()` on
+> startup will recreate them in a fresh database if you don't care
+> about preserving signups.
 
 ---
 
