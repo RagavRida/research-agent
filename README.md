@@ -22,7 +22,7 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 | 📂 **Backend repo** | [github.com/RagavRida/research-agent](https://github.com/RagavRida/research-agent) |
 | 🎨 **Landing repo** | [github.com/RagavRida/aria-landing](https://github.com/RagavRida/aria-landing) |
 | 🌐 **Landing (prod)** | https://aria-landing-one.vercel.app |
-| 🔌 **API (prod)** | https://research-agent-py.onrender.com (`/docs` for OpenAPI) |
+| 🔌 **API (prod)** | https://research-agent-production-d1bb.up.railway.app (`/docs` for OpenAPI) — Docker on Railway |
 | 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real SSE capture from a research run |
 | 🚀 **Deploy your own** | [Render blueprint](https://render.com/deploy?repo=https://github.com/RagavRida/research-agent) |
 
