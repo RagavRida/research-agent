@@ -202,10 +202,13 @@ def make_step_id(state: AgentState) -> int:
 
 
 def _get_system_message() -> SystemMessage:
-    """Build the master system message with current settings."""
+    """Build the master system message with current settings + today's date."""
+    today = datetime.now(timezone.utc).date()
     return SystemMessage(content=MASTER_SYSTEM_PROMPT.format(
         confidence_threshold=settings.confidence_threshold,
         max_iterations=settings.max_iterations,
+        current_date=today.isoformat(),
+        current_year=today.year,
     ))
 
 
