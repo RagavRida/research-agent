@@ -6,7 +6,7 @@ databases:
 
 services:
   - type: web
-    name: research-agent-api
+    name: research-agent-py
     runtime: python
     rootDir: research_agent
     buildCommand: pip install -r requirements.txt
@@ -36,3 +36,5 @@ services:
           property: connectionString
       - key: PORT
         value: 8000
+      - key: PYTHON_VERSION
+        value: "3.11.9"
