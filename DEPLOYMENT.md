@@ -5,7 +5,7 @@ This project runs on three providers:
 | Component | Provider | Source of truth |
 |-----------|----------|-----------------|
 | Backend (FastAPI + agent, Docker) | Railway | `Dockerfile`, `railway.json` |
-| Postgres (managed) | Render | `render.yaml` (`databases:` block only) |
+| Postgres (serverless) | Neon | `DATABASE_URL` env var on Railway |
 | Frontend (Vite + React + proxy) | Vercel | `github.com/RagavRida/aria-landing` |
 
 Live URLs live in the top-level `README.md` table.
@@ -49,37 +49,30 @@ The Dockerfile installs Python 3.11 + dependencies and runs `uvicorn main:app --
 
 ---
 
-## 2. Postgres on Render
+## 2. Postgres on Neon
 
-Render's free managed Postgres hosts the `users` and `queries` tables. The `render.yaml` blueprint declares it so it can be reprovisioned from scratch:
+The `users` and `queries` tables live on a Neon free serverless Postgres project (region: us-east-1). Neon has no 30-day free-tier cliff and scales to zero when idle, which suits a demo workload.
 
-```yaml
-databases:
-  - name: aria-db
-    plan: free
-    databaseName: aria
-    user: aria
+**One-time setup**
+
+1. Create a project at [console.neon.tech](https://console.neon.tech) — any region works, us-east-1 is closest to Railway's Oregon region.
+2. Copy the database connection string. Neon offers a "pooled" URL with `-pooler` in the hostname and a "direct" URL without; for this stack use the **direct** URL to avoid PgBouncer's prepared-statement pitfalls with asyncpg.
+3. Replace `sslmode=require` in the URL Neon gives you with `ssl=require`. asyncpg's URL parser understands `ssl=...` (psycopg's libpq-style `sslmode=...` throws `TypeError: unexpected keyword argument 'sslmode'`). Also drop `channel_binding=require` if present — it's not an asyncpg option.
+4. `railway variable set "DATABASE_URL=postgresql://…/neondb?ssl=require"` on the Railway service, then `railway redeploy`.
+
+Schema is auto-created on first boot — `init_db()` in `db/database.py` runs `Base.metadata.create_all` against whatever `DATABASE_URL` points to, so a fresh Neon project comes up populated after the first request.
+
+**Migration from an old Postgres** (needed if you're moving off a previous provider):
+
+```bash
+# dump — match your server's major version with the client
+/opt/homebrew/opt/postgresql@18/bin/pg_dump \
+  -h <old-host> -U <old-user> <old-db> \
+  --no-owner --no-privileges --clean --if-exists > aria.sql
+
+# restore
+PGPASSWORD=<pw> psql "postgresql://…neondb" -v ON_ERROR_STOP=1 -f aria.sql
 ```
-
-One-click provision: connect this repo in the Render dashboard and deploy the blueprint. Grab the external connection string from the database's dashboard page and set it as `DATABASE_URL` on the Railway service.
-
-> **⚠️ Render free Postgres expires 30 days after creation.** The live
-> database was provisioned on 2026-04-20 and will hit `status: expired`
-> on **2026-05-20**. After that date the backend will 500 on any
-> authed route until `DATABASE_URL` is pointed elsewhere. Migration
-> options in order of effort:
->
-> 1. **Extend on Render** — upgrade the same database to a paid plan
->    (~$7/mo) from the Render dashboard; no URL change needed.
-> 2. **Move to Railway Postgres** — `railway add --database postgres`
->    (requires Railway paid plan), copy the new `DATABASE_URL`, dump
->    + restore with `pg_dump | psql`, then `railway variable --set`.
-> 3. **Any external Postgres** — Neon, Supabase, or an old DO
->    droplet all work; just update `DATABASE_URL`.
->
-> The schema is two tables (`users`, `queries`); `init_db()` on
-> startup will recreate them in a fresh database if you don't care
-> about preserving signups.
 
 ---
 

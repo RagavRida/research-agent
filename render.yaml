@@ -1,8 +1,0 @@
-# Render blueprint — managed Postgres only.
-# The web service now lives on Railway (Docker). See railway.json + Dockerfile.
-
-databases:
-  - name: aria-db
-    plan: free
-    databaseName: aria
-    user: aria

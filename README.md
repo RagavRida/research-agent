@@ -24,7 +24,7 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 | 🌐 **Live app (prod)** | https://aria-landing-one.vercel.app — landing + signup + research UI at `/app` |
 | 🔌 **API (prod)** | https://research-agent-production-d1bb.up.railway.app (`/docs` for OpenAPI) — Docker on Railway, also proxied at `/api/*` |
 | 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real 42-event SSE capture from the live agent: 7 self-correction retries, 8 confidence updates, ends at 92% confidence with citations |
-| 🚀 **Deploy your own** | See [`DEPLOYMENT.md`](./DEPLOYMENT.md) — Railway (Docker backend) + Render (managed Postgres) + Vercel (frontend) |
+| 🚀 **Deploy your own** | See [`DEPLOYMENT.md`](./DEPLOYMENT.md) — Railway (Docker backend) + Neon (serverless Postgres) + Vercel (frontend) |
 
 ---
 
@@ -600,7 +600,6 @@ research-agent/
 ├── .github/workflows/ci.yml    # pytest on every push/PR
 ├── Dockerfile                  # Repo-root Docker build (Railway)
 ├── railway.json                # Railway build/healthcheck config
-├── render.yaml                 # Render blueprint — Postgres only
 ├── agent_trace.json            # Real 42-event SSE capture (7 retries → 92% confidence)
 └── README.md
 ```
