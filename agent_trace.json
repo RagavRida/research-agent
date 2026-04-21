@@ -4,9 +4,9 @@
     "data": {
       "step_id": 1,
       "type": "plan",
-      "timestamp": "2026-02-24T10:43:19.916256+00:00",
-      "duration_ms": 692.57,
-      "thinking": "Breaking down the query into core components: LangGraph and its functionality. Specific facts needed: definition, architecture, and workflow. To find these facts, we need to start with broad searches and narrow down to specific topics. Web search is suitable for broad topics, scholar search for research papers, and news search for recent developments.",
+      "timestamp": "2026-04-21T06:23:35.825516+00:00",
+      "duration_ms": 731.96,
+      "thinking": "Breaking down the research query into specific, searchable subtasks. The core components are LangGraph, its state machine, and a traditional agent loop. To find specific facts, we need to understand what LangGraph is and how its state machine differs from a traditional agent loop. The right search order is to start with general information about LangGraph and then narrow down to its state machine and comparison with traditional agent loops.",
       "action": "Creating research execution plan",
       "data": {
         "subtasks": [
@@ -19,33 +19,33 @@
           },
           {
             "id": "T-02",
-            "task": "Identify LangGraph architecture and components",
-            "priority": "MED",
+            "task": "Identify LangGraph's state machine architecture",
+            "priority": "HIGH",
             "tool": "scholar_search",
-            "search_query": "LangGraph architecture"
+            "search_query": "LangGraph state machine architecture"
           },
           {
             "id": "T-03",
-            "task": "Describe LangGraph workflow and functionality",
-            "priority": "LOW",
+            "task": "Describe traditional agent loop architecture",
+            "priority": "MED",
             "tool": "scholar_search",
-            "search_query": "LangGraph workflow"
+            "search_query": "traditional agent loop architecture"
           },
           {
             "id": "T-04",
-            "task": "Find recent developments and applications of LangGraph",
-            "priority": "LOW",
-            "tool": "news_search",
-            "search_query": "LangGraph recent applications"
+            "task": "Compare LangGraph's state machine with traditional agent loop",
+            "priority": "HIGH",
+            "tool": "scholar_search",
+            "search_query": "LangGraph state machine vs traditional agent loop"
           }
         ],
-        "strategy": "This research plan starts with a broad web search to understand the definition and purpose of LangGraph. Then, it narrows down to scholarly articles to identify the architecture and workflow. Finally, it uses news search to find recent developments and applications.",
+        "strategy": "First, we will use web search to gather general information about LangGraph. Then, we will use scholar search to find in-depth information about LangGraph's state machine and traditional agent loop architecture. Finally, we will use scholar search again to compare LangGraph's state machine with traditional agent loop.",
         "expected_challenges": [
-          "Finding relevant scholarly articles",
-          "Distinguishing between different LangGraph variants"
+          "Difficulty in finding accurate information about LangGraph",
+          "Complexity of comparing state machines and agent loops"
         ]
       },
-      "tokens_used": 789
+      "tokens_used": 907
     }
   },
   {
@@ -53,20 +53,19 @@
     "data": {
       "step_id": 2,
       "type": "search_initial",
-      "timestamp": "2026-02-24T10:43:22.627571+00:00",
-      "duration_ms": 2660.32,
-      "thinking": "Since this is the first iteration, I will start broad to establish a baseline understanding of LangGraph. I will use web_search for general coverage, as it is likely to provide a good overview of the topic.",
-      "action": "Executing web_search: 'LangGraph general overview'",
+      "timestamp": "2026-04-21T06:23:39.907716+00:00",
+      "duration_ms": 4031.27,
+      "thinking": "Since this is the first iteration, we'll start broad to establish a baseline understanding of LangGraph and its state machine. We'll use web_search for general coverage, as it's suitable for broad and introductory information.",
+      "action": "Executing web_search: 'LangGraph state machine overview'",
       "data": {
-        "query": "LangGraph general overview",
+        "query": "LangGraph state machine overview",
         "tool": "web_search",
-        "reason": "general coverage and broad understanding",
-        "targets_gap": "baseline understanding of LangGraph",
+        "reason": "Establishing baseline understanding of LangGraph and its state machine",
+        "targets_gap": "Understanding the general concept of LangGraph and its state machine",
         "reformulation_strategy": "broader",
         "expected_return": [
           "definition",
-          "purpose",
-          "general features"
+          "basic architecture"
         ],
         "is_retry": false,
         "confidence_before": 0,
@@ -76,56 +75,56 @@
         "reformulation_hint_used": "",
         "sources": [
           {
+            "url": "https://neurlcreators.substack.com/p/langgraph-agent-state-machine-review",
+            "title": "Building an Agentic State Machine with LangGraph",
+            "source_type": "web",
+            "score": 0.999982
+          },
+          {
+            "url": "https://blog.premai.io/langgraph-deep-dive-state-machines-tools-and-human-in-the-loop/",
+            "title": "LangGraph Deep Dive: State Machines, Tools, and Human-in-the ...",
+            "source_type": "web",
+            "score": 0.999956
+          },
+          {
+            "url": "https://activewizards.com/blog/architecting-event-driven-conversational-agents-with-langgraph",
+            "title": "Architecting Event-Driven Conversational Agents with ...",
+            "source_type": "web",
+            "score": 0.9999509
+          },
+          {
+            "url": "https://dev.to/jamesli/langgraph-state-machines-managing-complex-agent-task-flows-in-production-36f4",
+            "title": "LangGraph State Machines: Managing Complex Agent Task Flows ...",
+            "source_type": "web",
+            "score": 0.99962294
+          },
+          {
+            "url": "https://www.ibm.com/think/topics/langgraph",
+            "title": "What is LangGraph? - IBM",
+            "source_type": "web",
+            "score": 0.99916387
+          },
+          {
             "url": "https://docs.langchain.com/oss/python/langgraph/overview",
-            "title": "LangGraph overview",
+            "title": "LangGraph overview - Docs by LangChain",
             "source_type": "web",
-            "score": 0.89030397
+            "score": 0.99911004
           },
           {
-            "url": "https://medium.com/@shuv.sdr/langgraph-architecture-and-design-280c365aaf2c",
-            "title": "LangGraph \u2014 Architecture and Design",
+            "url": "https://docs.langchain.com/oss/python/langgraph/graph-api",
+            "title": "Graph API overview - Docs by LangChain",
             "source_type": "web",
-            "score": 0.8467682
+            "score": 0.99832565
           },
           {
-            "url": "https://www.youtube.com/watch?v=qkgW_iwdJ_c",
-            "title": "A Basic Introduction of How to Build AI Agents - YouTube",
+            "url": "https://medium.com/@creativeaininja/langgraph-why-the-future-of-ai-agents-looks-like-a-state-machine-not-a-chatbot-c4562fa148cb",
+            "title": "LangGraph: Why the Future of AI Agents Looks Like a State Machine ...",
             "source_type": "web",
-            "score": 0.7999589
-          },
-          {
-            "url": "https://www.geeksforgeeks.org/machine-learning/what-is-langgraph/",
-            "title": "What is LangGraph? - GeeksforGeeks",
-            "source_type": "web",
-            "score": 0.780947
-          },
-          {
-            "url": "https://dev.to/jamesli/introduction-to-langgraph-core-concepts-and-basic-components-5bak",
-            "title": "Introduction to LangGraph: Core Concepts and Basic Components",
-            "source_type": "web",
-            "score": 0.7668008
-          },
-          {
-            "url": "https://aws.amazon.com/blogs/machine-learning/build-multi-agent-systems-with-langgraph-and-amazon-bedrock/",
-            "title": "Build multi-agent systems with LangGraph and Amazon Bedrock",
-            "source_type": "web",
-            "score": 0.75027883
-          },
-          {
-            "url": "https://towardsdatascience.com/building-a-langgraph-agent-from-scratch/",
-            "title": "Building a LangGraph Agent from Scratch - Towards Data Science",
-            "source_type": "academic",
-            "score": 0.72884524
-          },
-          {
-            "url": "https://duplocloud.com/blog/langchain-vs-langgraph/",
-            "title": "LangChain vs. LangGraph: A Developer's Guide to Choosing Your ...",
-            "source_type": "web",
-            "score": 0.7144891
+            "score": 0.997065
           }
         ]
       },
-      "tokens_used": 742
+      "tokens_used": 829
     }
   },
   {
@@ -134,12 +133,12 @@
       "iteration": 1,
       "confidence": 0,
       "gaps": [
-        "specific details about LangGraph's architecture",
-        "academic sources for LangGraph"
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "academic sources providing a comprehensive answer to the question"
       ],
-      "failed_query": "LangGraph general overview",
-      "strategy": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
-      "timestamp": "2026-02-24T10:43:23.495595+00:00"
+      "failed_query": "LangGraph state machine overview",
+      "strategy": "Target academic sources and use more specific terminology to get detailed information on the state machine.",
+      "timestamp": "2026-04-21T06:23:41.089595+00:00"
     }
   },
   {
@@ -147,36 +146,36 @@
     "data": {
       "step_id": 3,
       "type": "evaluate_retry",
-      "timestamp": "2026-02-24T10:43:23.495861+00:00",
-      "duration_ms": 815.32,
-      "thinking": "I've analyzed 5 sources from my search for 'LangGraph general overview'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, academic sources for LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: Target academic sources and use more specific keywords related to LangGraph's architecture and implementation..",
+      "timestamp": "2026-04-21T06:23:41.089753+00:00",
+      "duration_ms": 1130.44,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph state machine overview'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific information on how LangGraph's state machine differs from a traditional agent loop, academic sources providing a comprehensive answer to the question. I cannot give a reliable answer yet. I need to search again with a different strategy: Target academic sources and use more specific terminology to get detailed information on the state machine..",
       "action": "Confidence 0% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
       "data": {
         "confidence": 0,
         "sources_found": 5,
-        "avg_reliability": 0.8,
+        "avg_reliability": 0.0,
         "threshold_met": false,
         "decision": "retry",
         "coverage_score": 20,
-        "reliability_score": 25,
+        "reliability_score": 0,
         "recency_score": 10,
-        "consistency_score": 10,
+        "consistency_score": 0,
         "gaps_identified": [
-          "specific details about LangGraph's architecture",
-          "academic sources for LangGraph"
+          "specific information on how LangGraph's state machine differs from a traditional agent loop",
+          "academic sources providing a comprehensive answer to the question"
         ],
-        "what_was_found": "LangGraph is a framework for building stateful, multi-agent applications, with features such as state management, memory, and human-in-the-loop functionality.",
-        "reformulation_hint": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
+        "what_was_found": "LangGraph models AI agent interactions as state machines, using a graph architecture with nodes and edges to represent states and transitions. However, the sources found are mostly blog posts and articles, and I couldn't find any specific information on how LangGraph's state machine differs from a traditional agent loop.",
+        "reformulation_hint": "Target academic sources and use more specific terminology to get detailed information on the state machine.",
         "reformulation_strategy": "source_targeted",
         "retry_urgency": "high",
         "is_retry_moment": true,
-        "query_evaluated": "LangGraph general overview",
+        "query_evaluated": "LangGraph state machine overview",
         "iteration": 1,
         "previous_confidence": 0,
         "confidence_delta": 0,
         "threshold": 85.0
       },
-      "tokens_used": 4078
+      "tokens_used": 4104
     }
   },
   {
@@ -194,8 +193,8 @@
     "event_type": "gaps_updated",
     "data": {
       "gaps": [
-        "academic sources for LangGraph",
-        "specific details about LangGraph's architecture"
+        "academic sources providing a comprehensive answer to the question",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop"
       ]
     }
   },
@@ -204,74 +203,74 @@
     "data": {
       "step_id": 4,
       "type": "search_retry",
-      "timestamp": "2026-02-24T10:43:27.798478+00:00",
-      "duration_ms": 4149.41,
-      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph architecture and implementation details' targets specifically: academic sources for LangGraph and specific details about LangGraph's architecture. This is iteration 2. Switching to scholar_search for better coverage.",
-      "action": "Executing scholar_search: 'LangGraph architecture and implementation details'",
+      "timestamp": "2026-04-21T06:23:43.487497+00:00",
+      "duration_ms": 2246.28,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph state machine comparison to traditional agent loop in academic literature' targets specifically: specific information on how LangGraph's state machine differs from a traditional agent loop. This is iteration 2. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine comparison to traditional agent loop in academic literature'",
       "data": {
-        "query": "LangGraph architecture and implementation details",
+        "query": "LangGraph state machine comparison to traditional agent loop in academic literature",
         "tool": "scholar_search",
-        "reason": "scholar_search is more suitable for academic sources and in-depth information",
-        "targets_gap": "academic sources for LangGraph and specific details about LangGraph's architecture",
+        "reason": "Targeting academic sources and using specific terminology to address the reformulation hint and the specific information gap.",
+        "targets_gap": "specific information on how LangGraph's state machine differs from a traditional agent loop",
         "reformulation_strategy": "source_targeted",
         "expected_return": [
-          "academic papers",
-          "technical reports"
+          "comparative analysis",
+          "state machine architecture"
         ],
         "is_retry": true,
         "confidence_before": 0,
         "results_count": 5,
         "iteration": 2,
         "previous_confidence": 0,
-        "reformulation_hint_used": "Target academic sources and use more specific keywords related to LangGraph's architecture and implementation.",
+        "reformulation_hint_used": "Target academic sources and use more specific terminology to get detailed information on the state machine.",
         "sources": [
           {
-            "url": "https://arxiv.org/html/2412.03801v1",
-            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "url": "https://arxiv.org/html/2604.03515v2",
+            "title": "Inside the Scaffold: A Source-Code Taxonomy of Coding Agent Architectures",
             "source_type": "academic",
-            "score": 0.9992206
+            "score": 0.9997198
           },
           {
-            "url": "https://arxiv.org/pdf/2509.08646?",
-            "title": "[PDF] Architecting Resilient LLM Agents: A Guide to Secure Plan-then ...",
+            "url": "https://arxiv.org/pdf/2604.11378",
+            "title": "[PDF] A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
             "source_type": "academic",
-            "score": 0.9992022
+            "score": 0.9994967
           },
           {
-            "url": "https://arxiv.org/pdf/2411.18241",
-            "title": "[PDF] Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
             "source_type": "academic",
-            "score": 0.99918324
+            "score": 0.9992735
           },
           {
-            "url": "https://arxiv.org/html/2412.01490v2",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "url": "https://arxiv.org/html/2601.12560v1",
+            "title": "Agentic Artificial Intelligence (AI): Architectures, Taxonomies, and Evaluation of Large Language Model Agents",
             "source_type": "academic",
-            "score": 0.99896777
+            "score": 0.9990452
           },
           {
-            "url": "https://arxiv.org/html/2411.18241v1",
-            "title": "Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "url": "https://arxiv.org/html/2510.25445v1",
+            "title": "Agentic AI: A Comprehensive Survey of Architectures, Applications ...",
             "source_type": "academic",
-            "score": 0.99857855
+            "score": 0.99583375
           }
         ]
       },
-      "tokens_used": 806
+      "tokens_used": 919
     }
   },
   {
     "event_type": "retry_triggered",
     "data": {
       "iteration": 2,
-      "confidence": 60,
+      "confidence": 0,
       "gaps": [
-        "specific details about LangGraph's architecture",
-        "practical applications of LangGraph"
+        "specific implementation details of LangGraph's state machine",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation"
       ],
-      "failed_query": "LangGraph architecture and implementation details",
-      "strategy": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
-      "timestamp": "2026-02-24T10:43:53.102029+00:00"
+      "failed_query": "LangGraph state machine comparison to traditional agent loop in academic literature",
+      "strategy": "Use a query that specifically asks for implementation details of LangGraph's state machine and its differences from traditional agent loops.",
+      "timestamp": "2026-04-21T06:24:16.695293+00:00"
     }
   },
   {
@@ -279,445 +278,36 @@
     "data": {
       "step_id": 5,
       "type": "evaluate_retry",
-      "timestamp": "2026-02-24T10:43:53.102222+00:00",
-      "duration_ms": 25252.14,
-      "thinking": "I've analyzed 5 sources from my search for 'LangGraph architecture and implementation details'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, practical applications of LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data..",
-      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
-      "data": {
-        "confidence": 60,
-        "sources_found": 5,
-        "avg_reliability": 0.9987,
-        "threshold_met": false,
-        "decision": "retry",
-        "coverage_score": 20,
-        "reliability_score": 25,
-        "recency_score": 10,
-        "consistency_score": 5,
-        "gaps_identified": [
-          "specific details about LangGraph's architecture",
-          "practical applications of LangGraph"
-        ],
-        "what_was_found": "LangGraph is a graph-based framework for building complex, long-running, and stateful agents. It provides granular control over the application's processes and states, enabling the creation of reliable agents that support advanced human-computer interaction and memory capabilities.",
-        "reformulation_hint": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
-        "reformulation_strategy": "source_targeted",
-        "retry_urgency": "medium",
-        "is_retry_moment": true,
-        "query_evaluated": "LangGraph architecture and implementation details",
-        "iteration": 2,
-        "previous_confidence": 0,
-        "confidence_delta": 60,
-        "threshold": 85.0
-      },
-      "tokens_used": 3184
-    }
-  },
-  {
-    "event_type": "confidence_update",
-    "data": {
-      "current": 60,
-      "history": [
-        0,
-        60
-      ],
-      "threshold": 85.0,
-      "passed": false
-    }
-  },
-  {
-    "event_type": "gaps_updated",
-    "data": {
-      "gaps": [
-        "practical applications of LangGraph",
-        "academic sources for LangGraph",
-        "specific details about LangGraph's architecture"
-      ]
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 6,
-      "type": "search_retry",
-      "timestamp": "2026-02-24T10:44:04.452480+00:00",
-      "duration_ms": 11196.49,
-      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph practical applications in recent research' targets specifically: practical applications of LangGraph. This is iteration 3. Switching to scholar_search for better coverage.",
-      "action": "Executing scholar_search: 'LangGraph practical applications in recent research'",
-      "data": {
-        "query": "LangGraph practical applications in recent research",
-        "tool": "scholar_search",
-        "reason": "scholar_search is suitable for finding academic sources and recent research",
-        "targets_gap": "practical applications of LangGraph",
-        "reformulation_strategy": "source_targeted",
-        "expected_return": [
-          "case studies",
-          "examples of LangGraph applications"
-        ],
-        "is_retry": true,
-        "confidence_before": 60,
-        "results_count": 5,
-        "iteration": 3,
-        "previous_confidence": 60,
-        "reformulation_hint_used": "I should target sources that provide practical examples or case studies of LangGraph's applications, and also focus on finding more recent data.",
-        "sources": [
-          {
-            "url": "https://arxiv.org/html/2412.03801v1",
-            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
-            "source_type": "academic",
-            "score": 0.5832277
-          },
-          {
-            "url": "https://arxiv.org/html/2502.18465v1",
-            "title": "Empirical Research on Utilizing LLM-based Agents for Automated ...",
-            "source_type": "academic",
-            "score": 0.5769478
-          },
-          {
-            "url": "https://arxiv.org/html/2412.01490v2",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
-            "source_type": "academic",
-            "score": 0.56661874
-          },
-          {
-            "url": "https://arxiv.org/html/2412.01490v3",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
-            "source_type": "academic",
-            "score": 0.56661874
-          },
-          {
-            "url": "https://arxiv.org/html/2501.14734v1",
-            "title": "Research on the Application of Spark Streaming Real-Time Data ...",
-            "source_type": "academic",
-            "score": 0.5654673
-          }
-        ]
-      },
-      "tokens_used": 832
-    }
-  },
-  {
-    "event_type": "retry_triggered",
-    "data": {
-      "iteration": 3,
-      "confidence": 60,
-      "gaps": [
-        "specific details about LangGraph's architecture",
-        "implementation details of LangGraph"
-      ],
-      "failed_query": "LangGraph practical applications in recent research",
-      "strategy": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
-      "timestamp": "2026-02-24T10:44:30.698266+00:00"
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 7,
-      "type": "evaluate_retry",
-      "timestamp": "2026-02-24T10:44:30.698337+00:00",
-      "duration_ms": 26194.26,
-      "thinking": "I've analyzed 5 sources from my search for 'LangGraph practical applications in recent research'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture, implementation details of LangGraph. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'..",
-      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
-      "data": {
-        "confidence": 60,
-        "sources_found": 5,
-        "avg_reliability": 0.576,
-        "threshold_met": false,
-        "decision": "retry",
-        "coverage_score": 20,
-        "reliability_score": 20,
-        "recency_score": 0,
-        "consistency_score": 10,
-        "gaps_identified": [
-          "specific details about LangGraph's architecture",
-          "implementation details of LangGraph"
-        ],
-        "what_was_found": "LangGraph is a graph-based framework that offers a flexible and efficient way to construct agents that can leverage the capabilities of large language models to perform complex tasks. It utilizes a StateGraph class to define a workflow graph, which is used to construct the execution process of an agent.",
-        "reformulation_hint": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
-        "reformulation_strategy": "narrower",
-        "retry_urgency": "high",
-        "is_retry_moment": true,
-        "query_evaluated": "LangGraph practical applications in recent research",
-        "iteration": 3,
-        "previous_confidence": 60,
-        "confidence_delta": 0,
-        "threshold": 85.0
-      },
-      "tokens_used": 3252
-    }
-  },
-  {
-    "event_type": "confidence_update",
-    "data": {
-      "current": 60,
-      "history": [
-        0,
-        60,
-        60
-      ],
-      "threshold": 85.0,
-      "passed": false
-    }
-  },
-  {
-    "event_type": "gaps_updated",
-    "data": {
-      "gaps": [
-        "practical applications of LangGraph",
-        "academic sources for LangGraph",
-        "implementation details of LangGraph",
-        "specific details about LangGraph's architecture"
-      ]
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 8,
-      "type": "search_retry",
-      "timestamp": "2026-02-24T10:44:41.654027+00:00",
-      "duration_ms": 10802.82,
-      "thinking": "Previous search failed confidence check. Reformulation strategy: adjacent. New query 'LangGraph architecture and implementation details in recent research papers' targets specifically: implementation details of LangGraph. This is iteration 4. Switching to scholar_search for better coverage.",
-      "action": "Executing scholar_search: 'LangGraph architecture and implementation details in recent research papers'",
-      "data": {
-        "query": "LangGraph architecture and implementation details in recent research papers",
-        "tool": "scholar_search",
-        "reason": "scholar_search is more suitable for academic research papers and can provide in-depth information on LangGraph's architecture and implementation details",
-        "targets_gap": "implementation details of LangGraph",
-        "reformulation_strategy": "adjacent",
-        "expected_return": [
-          "research papers",
-          "academic sources"
-        ],
-        "is_retry": true,
-        "confidence_before": 60,
-        "results_count": 5,
-        "iteration": 4,
-        "previous_confidence": 60,
-        "reformulation_hint_used": "Use a query that includes keywords related to LangGraph's architecture and implementation, such as 'LangGraph architecture', 'LangGraph implementation', or 'LangGraph framework details'.",
-        "sources": [
-          {
-            "url": "https://arxiv.org/html/2411.18241v1",
-            "title": "Exploration of LLM Multi-Agent Application Implementation Based ...",
-            "source_type": "academic",
-            "score": 0.9992084
-          },
-          {
-            "url": "https://arxiv.org/html/2601.12607v1",
-            "title": "A Cloud-based Multi-Agentic Workflow for Science - arXiv",
-            "source_type": "academic",
-            "score": 0.99857855
-          },
-          {
-            "url": "https://arxiv.org/html/2602.11527v1",
-            "title": "A Conversational Multi-Agent System for End-to-End Causal Inference",
-            "source_type": "academic",
-            "score": 0.997851
-          },
-          {
-            "url": "https://arxiv.org/html/2509.00761v2",
-            "title": "L-MARS: Legal Multi-Agent Workflow with Orchestrated Reasoning ...",
-            "source_type": "academic",
-            "score": 0.9976586
-          },
-          {
-            "url": "https://arxiv.org/html/2506.18783v1",
-            "title": "A Multi-Agent LLM Approach for TRIZ-Based Innovation - arXiv",
-            "source_type": "academic",
-            "score": 0.99758446
-          }
-        ]
-      },
-      "tokens_used": 876
-    }
-  },
-  {
-    "event_type": "retry_triggered",
-    "data": {
-      "iteration": 4,
-      "confidence": 60,
-      "gaps": [
-        "specific details about LangGraph's architecture and implementation",
-        "core functionality of LangGraph and how it works"
-      ],
-      "failed_query": "LangGraph architecture and implementation details in recent research papers",
-      "strategy": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
-      "timestamp": "2026-02-24T10:45:08.250086+00:00"
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 9,
-      "type": "evaluate_retry",
-      "timestamp": "2026-02-24T10:45:08.250251+00:00",
-      "duration_ms": 26542.94,
-      "thinking": "I've analyzed 5 sources from my search for 'LangGraph architecture and implementation details in recent research papers'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's architecture and implementation, core functionality of LangGraph and how it works. I cannot give a reliable answer yet. I need to search again with a different strategy: Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources..",
-      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
-      "data": {
-        "confidence": 60,
-        "sources_found": 5,
-        "avg_reliability": 0.999,
-        "threshold_met": false,
-        "decision": "retry",
-        "coverage_score": 20,
-        "reliability_score": 25,
-        "recency_score": 0,
-        "consistency_score": 15,
-        "gaps_identified": [
-          "specific details about LangGraph's architecture and implementation",
-          "core functionality of LangGraph and how it works"
-        ],
-        "what_was_found": "LangGraph is a framework designed for constructing multi-agent applications, enabling developers to utilize large language models (LLMs) to create agents and multi-agent workflows. It provides granular control over the application's processes and states, enabling the creation of reliable agents that support advanced human-computer interaction and memory capabilities.",
-        "reformulation_hint": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
-        "reformulation_strategy": "narrower",
-        "retry_urgency": "high",
-        "is_retry_moment": true,
-        "query_evaluated": "LangGraph architecture and implementation details in recent research papers",
-        "iteration": 4,
-        "previous_confidence": 60,
-        "confidence_delta": 0,
-        "threshold": 85.0
-      },
-      "tokens_used": 3179
-    }
-  },
-  {
-    "event_type": "confidence_update",
-    "data": {
-      "current": 60,
-      "history": [
-        0,
-        60,
-        60,
-        60
-      ],
-      "threshold": 85.0,
-      "passed": false
-    }
-  },
-  {
-    "event_type": "gaps_updated",
-    "data": {
-      "gaps": [
-        "academic sources for LangGraph",
-        "core functionality of LangGraph and how it works",
-        "implementation details of LangGraph",
-        "specific details about LangGraph's architecture",
-        "specific details about LangGraph's architecture and implementation",
-        "practical applications of LangGraph"
-      ]
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 10,
-      "type": "search_retry",
-      "timestamp": "2026-02-24T10:45:18.910593+00:00",
-      "duration_ms": 10507.95,
-      "thinking": "Previous search failed confidence check. Reformulation strategy: narrower. New query 'LangGraph core functionality and architecture in recent research papers' targets specifically: core functionality of LangGraph and how it works. This is iteration 5. Switching to scholar_search for better coverage.",
-      "action": "Executing scholar_search: 'LangGraph core functionality and architecture in recent research papers'",
-      "data": {
-        "query": "LangGraph core functionality and architecture in recent research papers",
-        "tool": "scholar_search",
-        "reason": "scholar_search is more suitable for academic research and recent papers",
-        "targets_gap": "core functionality of LangGraph and how it works",
-        "reformulation_strategy": "narrower",
-        "expected_return": [
-          "academic sources for LangGraph",
-          "specific details about LangGraph's architecture"
-        ],
-        "is_retry": true,
-        "confidence_before": 60,
-        "results_count": 5,
-        "iteration": 5,
-        "previous_confidence": 60,
-        "reformulation_hint_used": "Narrow the query to focus on LangGraph's core functionality and architecture, and try to find more recent sources.",
-        "sources": [
-          {
-            "url": "https://arxiv.org/html/2411.18241v1",
-            "title": "LLM Multi-Agent Application Implementation - LangGraph+CrewAI",
-            "source_type": "academic",
-            "score": 0.54681134
-          },
-          {
-            "url": "https://arxiv.org/html/2412.03801v1",
-            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
-            "source_type": "academic",
-            "score": 0.51383984
-          },
-          {
-            "url": "https://arxiv.org/html/2412.01490v4",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
-            "source_type": "academic",
-            "score": 0.41591915
-          },
-          {
-            "url": "https://arxiv.org/html/2412.01490v3",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
-            "source_type": "academic",
-            "score": 0.41591915
-          },
-          {
-            "url": "https://arxiv.org/html/2412.01490v2",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
-            "source_type": "academic",
-            "score": 0.41591915
-          }
-        ]
-      },
-      "tokens_used": 885
-    }
-  },
-  {
-    "event_type": "retry_triggered",
-    "data": {
-      "iteration": 5,
-      "confidence": 0,
-      "gaps": [
-        "specific details about LangGraph's core functionality",
-        "specific details about LangGraph's architecture"
-      ],
-      "failed_query": "LangGraph core functionality and architecture in recent research papers",
-      "strategy": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
-      "timestamp": "2026-02-24T10:45:49.017030+00:00"
-    }
-  },
-  {
-    "event_type": "step",
-    "data": {
-      "step_id": 11,
-      "type": "evaluate_retry",
-      "timestamp": "2026-02-24T10:45:49.017562+00:00",
-      "duration_ms": 30054.59,
-      "thinking": "I've analyzed 4 sources from my search for 'LangGraph core functionality and architecture in recent research papers'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific details about LangGraph's core functionality, specific details about LangGraph's architecture. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'..",
+      "timestamp": "2026-04-21T06:24:16.695371+00:00",
+      "duration_ms": 33156.69,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph state machine comparison to traditional agent loop in academic literature'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific implementation details of LangGraph's state machine, differences between LangGraph's state machine and traditional agent loops in terms of implementation. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that specifically asks for implementation details of LangGraph's state machine and its differences from traditional agent loops..",
       "action": "Confidence 0% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
       "data": {
         "confidence": 0,
-        "sources_found": 4,
-        "avg_reliability": 0.492,
+        "sources_found": 5,
+        "avg_reliability": 0.998,
         "threshold_met": false,
         "decision": "retry",
         "coverage_score": 20,
-        "reliability_score": 20,
-        "recency_score": 10,
-        "consistency_score": 5,
+        "reliability_score": 29,
+        "recency_score": 15,
+        "consistency_score": 15,
         "gaps_identified": [
-          "specific details about LangGraph's core functionality",
-          "specific details about LangGraph's architecture"
+          "specific implementation details of LangGraph's state machine",
+          "differences between LangGraph's state machine and traditional agent loops in terms of implementation"
         ],
-        "what_was_found": "LangGraph is a graph-based framework that offers a flexible and efficient way to construct agents that can leverage the capabilities of large language models. It is used in various applications, including machine translation and workflow management.",
-        "reformulation_hint": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
+        "what_was_found": "LangGraph is a graph-based agent framework that supports parallel node execution, conditional edges, state channels, and runtime graph modification. It has a semi-deterministic policy, but the conditional-edge routing is determined by LLM output at runtime, making the effective policy non-deterministic.",
+        "reformulation_hint": "Use a query that specifically asks for implementation details of LangGraph's state machine and its differences from traditional agent loops.",
         "reformulation_strategy": "narrower",
         "retry_urgency": "high",
         "is_retry_moment": true,
-        "query_evaluated": "LangGraph core functionality and architecture in recent research papers",
-        "iteration": 5,
-        "previous_confidence": 60,
-        "confidence_delta": -60,
+        "query_evaluated": "LangGraph state machine comparison to traditional agent loop in academic literature",
+        "iteration": 2,
+        "previous_confidence": 0,
+        "confidence_delta": 0,
         "threshold": 85.0
       },
-      "tokens_used": 3446
+      "tokens_used": 3680
     }
   },
   {
@@ -726,9 +316,6 @@
       "current": 0,
       "history": [
         0,
-        60,
-        60,
-        60,
         0
       ],
       "threshold": 85.0,
@@ -739,13 +326,440 @@
     "event_type": "gaps_updated",
     "data": {
       "gaps": [
-        "academic sources for LangGraph",
-        "implementation details of LangGraph",
-        "practical applications of LangGraph",
-        "specific details about LangGraph's architecture",
-        "specific details about LangGraph's architecture and implementation",
-        "specific details about LangGraph's core functionality",
-        "core functionality of LangGraph and how it works"
+        "specific implementation details of LangGraph's state machine",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "academic sources providing a comprehensive answer to the question",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 6,
+      "type": "search_retry",
+      "timestamp": "2026-04-21T06:24:31.058213+00:00",
+      "duration_ms": 14211.55,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph state machine implementation details and differences from traditional agent loops in academic literature' targets specifically: specific implementation details of LangGraph's state machine and differences between LangGraph's state machine and traditional agent loops in terms of implementation. This is iteration 3. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine implementation details and differences from traditional agent loops in academic literature'",
+      "data": {
+        "query": "LangGraph state machine implementation details and differences from traditional agent loops in academic literature",
+        "tool": "scholar_search",
+        "reason": "scholar_search is more suitable for academic literature and implementation details",
+        "targets_gap": "specific implementation details of LangGraph's state machine and differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "reformulation_strategy": "source_targeted",
+        "expected_return": [
+          "implementation details",
+          "differences from traditional agent loops"
+        ],
+        "is_retry": true,
+        "confidence_before": 0,
+        "results_count": 5,
+        "iteration": 3,
+        "previous_confidence": 0,
+        "reformulation_hint_used": "Use a query that specifically asks for implementation details of LangGraph's state machine and its differences from traditional agent loops.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.5631623
+          },
+          {
+            "url": "https://arxiv.org/html/2601.12560v1",
+            "title": "Agentic Artificial Intelligence (AI): Architectures, Taxonomies, and Evaluation of Large Language Model Agents",
+            "source_type": "academic",
+            "score": 0.44666424
+          },
+          {
+            "url": "https://arxiv.org/html/2604.03515v1",
+            "title": "A Source-Code Taxonomy of Coding Agent Architectures - arXiv",
+            "source_type": "academic",
+            "score": 0.42448413
+          },
+          {
+            "url": "https://arxiv.org/html/2510.25445v1",
+            "title": "Agentic AI: A Comprehensive Survey of Architectures, Applications ...",
+            "source_type": "academic",
+            "score": 0.38769087
+          },
+          {
+            "url": "https://arxiv.org/html/2601.03328v1",
+            "title": "LLM-Enabled Multi-Agent Systems: Empirical Evaluation and ... - arXiv",
+            "source_type": "academic",
+            "score": 0.29573354
+          }
+        ]
+      },
+      "tokens_used": 985
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 3,
+      "confidence": 0,
+      "gaps": [
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "academic sources providing a comprehensive answer to the question"
+      ],
+      "failed_query": "LangGraph state machine implementation details and differences from traditional agent loops in academic literature",
+      "strategy": "Use a query that specifically asks about the state machine differences between LangGraph and traditional agent loops, such as 'LangGraph state machine vs traditional agent loop' or 'LangGraph state machine architecture'.",
+      "timestamp": "2026-04-21T06:25:04.131023+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 7,
+      "type": "evaluate_retry",
+      "timestamp": "2026-04-21T06:25:04.131110+00:00",
+      "duration_ms": 33021.62,
+      "thinking": "I've analyzed 4 sources from my search for 'LangGraph state machine implementation details and differences from traditional agent loops in academic literature'. My confidence is only 0% \u2014 below the 85.0% threshold. I'm missing critical information: specific information on how LangGraph's state machine differs from a traditional agent loop, academic sources providing a comprehensive answer to the question. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that specifically asks about the state machine differences between LangGraph and traditional agent loops, such as 'LangGraph state machine vs traditional agent loop' or 'LangGraph state machine architecture'..",
+      "action": "Confidence 0% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 0,
+        "sources_found": 4,
+        "avg_reliability": 0.5,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 10,
+        "consistency_score": 10,
+        "gaps_identified": [
+          "specific information on how LangGraph's state machine differs from a traditional agent loop",
+          "academic sources providing a comprehensive answer to the question"
+        ],
+        "what_was_found": "LangGraph is a graph-based agent framework that supports parallel node execution, conditional edges, and state channels. It is used in multi-agent systems and has been compared to other frameworks. However, the core question about the state machine differences is not directly answered.",
+        "reformulation_hint": "Use a query that specifically asks about the state machine differences between LangGraph and traditional agent loops, such as 'LangGraph state machine vs traditional agent loop' or 'LangGraph state machine architecture'.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph state machine implementation details and differences from traditional agent loops in academic literature",
+        "iteration": 3,
+        "previous_confidence": 0,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3686
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 0,
+      "history": [
+        0,
+        0,
+        0
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "specific implementation details of LangGraph's state machine",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "academic sources providing a comprehensive answer to the question"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 8,
+      "type": "search_retry",
+      "timestamp": "2026-04-21T06:25:18.820108+00:00",
+      "duration_ms": 14537.62,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: narrower. New query 'LangGraph state machine architecture vs traditional agent loop implementation' targets specifically: specific implementation details of LangGraph's state machine and differences between LangGraph's state machine and traditional agent loops in terms of implementation. This is iteration 4. Switching to web_search for better coverage.",
+      "action": "Executing web_search: 'LangGraph state machine architecture vs traditional agent loop implementation'",
+      "data": {
+        "query": "LangGraph state machine architecture vs traditional agent loop implementation",
+        "tool": "web_search",
+        "reason": "web_search is suitable for general coverage and broad information",
+        "targets_gap": "specific implementation details of LangGraph's state machine and differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "reformulation_strategy": "narrower",
+        "expected_return": [
+          "implementation details",
+          "architecture comparison"
+        ],
+        "is_retry": true,
+        "confidence_before": 0,
+        "results_count": 8,
+        "iteration": 4,
+        "previous_confidence": 0,
+        "reformulation_hint_used": "Use a query that specifically asks about the state machine differences between LangGraph and traditional agent loops, such as 'LangGraph state machine vs traditional agent loop' or 'LangGraph state machine architecture'.",
+        "sources": [
+          {
+            "url": "https://dev.to/aws/building-production-ready-ai-agents-with-langgraph-and-amazon-bedrock-agentcore-4h5k",
+            "title": "Building Production-Ready AI Agents with LangGraph and Amazon Bedrock AgentCore - DEV Community",
+            "source_type": "web",
+            "score": 0.99998224
+          },
+          {
+            "url": "https://medium.com/@saeedhajebi/langgraph-is-not-a-true-agentic-framework-3f010c780857",
+            "title": "LangGraph is Not a True Agentic Framework | by Saeed Hajebi",
+            "source_type": "web",
+            "score": 0.9999546
+          },
+          {
+            "url": "https://neurlcreators.substack.com/p/langgraph-agent-state-machine-review",
+            "title": "Building an Agentic State Machine with LangGraph",
+            "source_type": "web",
+            "score": 0.9999422
+          },
+          {
+            "url": "https://zenriotech.com/blog/langgraph-state-machine-architectures-resilient-ai-agents",
+            "title": "From LangChain to LangGraph: Why State-Machine Architectures are the New Standard for Resilient AI Agents | ZenrioTech",
+            "source_type": "web",
+            "score": 0.99992275
+          },
+          {
+            "url": "https://christianmendieta.ca/crewai-vs-langgraph-why-production-systems-need-state-machines/",
+            "title": "CrewAI vs LangGraph: Why Production Systems Need State Machines",
+            "source_type": "web",
+            "score": 0.99989927
+          },
+          {
+            "url": "https://www.langchain.com/blog/building-langgraph",
+            "title": "Building LangGraph: Designing an Agent Runtime from first principles",
+            "source_type": "web",
+            "score": 0.99989843
+          },
+          {
+            "url": "https://www.zenml.io/blog/langflow-vs-langgraph",
+            "title": "Langflow vs LangGraph: A Detailed Comparison for Building Agentic AI Systems - ZenML Blog",
+            "source_type": "web",
+            "score": 0.99988127
+          },
+          {
+            "url": "https://latenode.com/blog/ai-frameworks-technical-infrastructure/langgraph-multi-agent-orchestration/langgraph-ai-framework-2025-complete-architecture-guide-multi-agent-orchestration-analysis",
+            "title": "LangGraph AI Framework 2025: Complete Architecture Guide + ...",
+            "source_type": "web",
+            "score": 0.99973255
+          }
+        ]
+      },
+      "tokens_used": 1016
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 4,
+      "confidence": 40,
+      "gaps": [
+        "specific implementation details of LangGraph's state machine",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation"
+      ],
+      "failed_query": "LangGraph state machine architecture vs traditional agent loop implementation",
+      "strategy": "Target academic sources and use specific terminology related to implementation details.",
+      "timestamp": "2026-04-21T06:25:58.013501+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 9,
+      "type": "evaluate_retry",
+      "timestamp": "2026-04-21T06:25:58.013590+00:00",
+      "duration_ms": 39142.35,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph state machine architecture vs traditional agent loop implementation'. My confidence is only 40% \u2014 below the 85.0% threshold. I'm missing critical information: specific implementation details of LangGraph's state machine, differences between LangGraph's state machine and traditional agent loops in terms of implementation. I cannot give a reliable answer yet. I need to search again with a different strategy: Target academic sources and use specific terminology related to implementation details..",
+      "action": "Confidence 40% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 40,
+        "sources_found": 5,
+        "avg_reliability": 0.95,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 15,
+        "recency_score": 0,
+        "consistency_score": 5,
+        "gaps_identified": [
+          "specific implementation details of LangGraph's state machine",
+          "differences between LangGraph's state machine and traditional agent loops in terms of implementation"
+        ],
+        "what_was_found": "LangGraph's state machine architecture is graph-based, allowing for explicit control flow and state management. It is designed for building production-ready AI agents with complex workflows.",
+        "reformulation_hint": "Target academic sources and use specific terminology related to implementation details.",
+        "reformulation_strategy": "source_targeted",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph state machine architecture vs traditional agent loop implementation",
+        "iteration": 4,
+        "previous_confidence": 0,
+        "confidence_delta": 40,
+        "threshold": 85.0
+      },
+      "tokens_used": 4243
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 40,
+      "history": [
+        0,
+        0,
+        0,
+        40
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources providing a comprehensive answer to the question",
+        "specific implementation details of LangGraph's state machine",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 10,
+      "type": "search_retry",
+      "timestamp": "2026-04-21T06:26:13.586451+00:00",
+      "duration_ms": 15421.38,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph state machine implementation details in academic literature' targets specifically: specific implementation details of LangGraph's state machine. This is iteration 5. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine implementation details in academic literature'",
+      "data": {
+        "query": "LangGraph state machine implementation details in academic literature",
+        "tool": "scholar_search",
+        "reason": "Targeting academic sources for specific implementation details",
+        "targets_gap": "specific implementation details of LangGraph's state machine",
+        "reformulation_strategy": "source_targeted",
+        "expected_return": [
+          "implementation details",
+          "academic literature"
+        ],
+        "is_retry": true,
+        "confidence_before": 40,
+        "results_count": 5,
+        "iteration": 5,
+        "previous_confidence": 40,
+        "reformulation_hint_used": "Target academic sources and use specific terminology related to implementation details.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.99968743
+          },
+          {
+            "url": "https://arxiv.org/html/2412.01490v3",
+            "title": "Intelligent Spark Agents: A Modular LangGraph Framework for Scalable, Visualized, and Enhanced Big Data Machine Learning Workflows",
+            "source_type": "academic",
+            "score": 0.9979652
+          },
+          {
+            "url": "https://arxiv.org/html/2508.05294v3",
+            "title": "Towards Embodied Agentic AI: Review and Classification of LLM- and VLM-Driven Robot Autonomy and Interaction",
+            "source_type": "academic",
+            "score": 0.9966234
+          },
+          {
+            "url": "https://arxiv.org/html/2412.13774v1",
+            "title": "Designing an LLM-Based Copilot for Manufacturing Equipment Selection",
+            "source_type": "academic",
+            "score": 0.9951703
+          },
+          {
+            "url": "https://arxiv.org/html/2411.18241v1",
+            "title": "Exploration of LLM Multi-Agent Application Implementation Based ...",
+            "source_type": "academic",
+            "score": 0.9928231
+          }
+        ]
+      },
+      "tokens_used": 970
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 5,
+      "confidence": 60,
+      "gaps": [
+        "specific implementation details of LangGraph's state machine",
+        "direct comparison to traditional agent loops"
+      ],
+      "failed_query": "LangGraph state machine implementation details in academic literature",
+      "strategy": "Use a query that focuses on 'implementation details of LangGraph's state machine' and 'direct comparison to traditional agent loops' to gather more specific information.",
+      "timestamp": "2026-04-21T06:26:38.506242+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 11,
+      "type": "evaluate_retry",
+      "timestamp": "2026-04-21T06:26:38.506334+00:00",
+      "duration_ms": 24868.42,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph state machine implementation details in academic literature'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific implementation details of LangGraph's state machine, direct comparison to traditional agent loops. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that focuses on 'implementation details of LangGraph's state machine' and 'direct comparison to traditional agent loops' to gather more specific information..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.998,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 0,
+        "consistency_score": 15,
+        "gaps_identified": [
+          "specific implementation details of LangGraph's state machine",
+          "direct comparison to traditional agent loops"
+        ],
+        "what_was_found": "LangGraph is a graph-based framework that supports parallel node execution, conditional edges, and state channels. It has a semi-deterministic policy due to the graph topology and LLM output at runtime.",
+        "reformulation_hint": "Use a query that focuses on 'implementation details of LangGraph's state machine' and 'direct comparison to traditional agent loops' to gather more specific information.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph state machine implementation details in academic literature",
+        "iteration": 5,
+        "previous_confidence": 40,
+        "confidence_delta": 20,
+        "threshold": 85.0
+      },
+      "tokens_used": 3079
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        0,
+        0,
+        40,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources providing a comprehensive answer to the question",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "direct comparison to traditional agent loops",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "specific implementation details of LangGraph's state machine"
       ]
     }
   },
@@ -754,60 +768,490 @@
     "data": {
       "step_id": 12,
       "type": "search_retry",
-      "timestamp": "2026-02-24T10:46:00.472096+00:00",
-      "duration_ms": 11298.94,
-      "thinking": "Previous search failed confidence check. Reformulation strategy: source_targeted. New query 'LangGraph core functionality and technical specifications' targets specifically: specific details about LangGraph's core functionality and architecture. This is iteration 6. Switching to scholar_search for better coverage.",
-      "action": "Executing scholar_search: 'LangGraph core functionality and technical specifications'",
+      "timestamp": "2026-04-21T06:26:50.735790+00:00",
+      "duration_ms": 12078.08,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: adjacent. New query 'LangGraph state machine implementation details in comparison to traditional agent loops' targets specifically: specific implementation details of LangGraph's state machine and direct comparison to traditional agent loops. This is iteration 6. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine implementation details in comparison to traditional agent loops'",
       "data": {
-        "query": "LangGraph core functionality and technical specifications",
+        "query": "LangGraph state machine implementation details in comparison to traditional agent loops",
         "tool": "scholar_search",
-        "reason": "The reformulation hint suggests targeting academic sources, and scholar_search is more suitable for in-depth technical information.",
-        "targets_gap": "specific details about LangGraph's core functionality and architecture",
-        "reformulation_strategy": "source_targeted",
+        "reason": "scholar_search is more suitable for academic literature and implementation details",
+        "targets_gap": "specific implementation details of LangGraph's state machine and direct comparison to traditional agent loops",
+        "reformulation_strategy": "adjacent",
         "expected_return": [
-          "technical specifications",
-          "core functionality details"
+          "implementation details",
+          "comparison to traditional agent loops"
         ],
         "is_retry": true,
-        "confidence_before": 0,
+        "confidence_before": 60,
         "results_count": 5,
         "iteration": 6,
-        "previous_confidence": 0,
-        "reformulation_hint_used": "Use a query that specifically targets LangGraph's core functionality and architecture, such as 'LangGraph core functionality and architecture' or 'LangGraph technical specifications'.",
+        "previous_confidence": 60,
+        "reformulation_hint_used": "Use a query that focuses on 'implementation details of LangGraph's state machine' and 'direct comparison to traditional agent loops' to gather more specific information.",
         "sources": [
           {
-            "url": "https://arxiv.org/html/2412.01490v2",
-            "title": "Intelligent Spark Agents: A Modular LangGraph Framework ... - arXiv",
+            "url": "https://arxiv.org/html/2604.03515v1",
+            "title": "A Source-Code Taxonomy of Coding Agent Architectures - arXiv",
             "source_type": "academic",
-            "score": 0.98589
+            "score": 0.9999324
           },
           {
-            "url": "https://arxiv.org/html/2510.04173v2",
-            "title": "Open Agent Specification (Agent Spec) Technical Report - arXiv.org",
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
             "source_type": "academic",
-            "score": 0.98541
+            "score": 0.9997063
           },
           {
-            "url": "https://arxiv.org/abs/2412.03801",
-            "title": "Agent AI with LangGraph: A Modular Framework for Enhancing ...",
+            "url": "https://arxiv.org/html/2504.03771v1",
+            "title": "Flow State: Humans Enabling AI Systems to Program Themselves",
             "source_type": "academic",
-            "score": 0.98243
+            "score": 0.9994766
           },
           {
-            "url": "https://arxiv.org/html/2508.10146v1",
-            "title": "Agentic AI Frameworks: Architectures, Protocols, and Design ...",
+            "url": "https://arxiv.org/pdf/2604.11378",
+            "title": "[PDF] A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
             "source_type": "academic",
-            "score": 0.98202
+            "score": 0.99937373
           },
           {
-            "url": "https://arxiv.org/html/2501.11613v3",
-            "title": "A Prompt Engineering Framework for Task-Oriented Dialog Systems",
+            "url": "https://arxiv.org/pdf/2503.21036",
+            "title": "[PDF] arXiv:2503.21036v1 [cs.AI] 26 Mar 2025",
             "source_type": "academic",
-            "score": 0.97748
+            "score": 0.9989837
           }
         ]
       },
-      "tokens_used": 924
+      "tokens_used": 1039
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 6,
+      "confidence": 60,
+      "gaps": [
+        "specific implementation details of LangGraph's state machine",
+        "direct comparison to traditional agent loops"
+      ],
+      "failed_query": "LangGraph state machine implementation details in comparison to traditional agent loops",
+      "strategy": "Use a query that specifically asks for implementation details and direct comparisons to traditional agent loops.",
+      "timestamp": "2026-04-21T06:27:28.359212+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 13,
+      "type": "evaluate_retry",
+      "timestamp": "2026-04-21T06:27:28.359307+00:00",
+      "duration_ms": 37572.4,
+      "thinking": "I've analyzed 4 sources from my search for 'LangGraph state machine implementation details in comparison to traditional agent loops'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: specific implementation details of LangGraph's state machine, direct comparison to traditional agent loops. I cannot give a reliable answer yet. I need to search again with a different strategy: Use a query that specifically asks for implementation details and direct comparisons to traditional agent loops..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 4,
+        "avg_reliability": 0.999,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 24,
+        "recency_score": 12,
+        "consistency_score": 9,
+        "gaps_identified": [
+          "specific implementation details of LangGraph's state machine",
+          "direct comparison to traditional agent loops"
+        ],
+        "what_was_found": "LangGraph's architecture, differences from traditional agent loops, and its use in various applications.",
+        "reformulation_hint": "Use a query that specifically asks for implementation details and direct comparisons to traditional agent loops.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph state machine implementation details in comparison to traditional agent loops",
+        "iteration": 6,
+        "previous_confidence": 60,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3902
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        0,
+        0,
+        40,
+        60,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources providing a comprehensive answer to the question",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "direct comparison to traditional agent loops",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "specific implementation details of LangGraph's state machine"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 14,
+      "type": "search_retry",
+      "timestamp": "2026-04-21T06:27:41.827193+00:00",
+      "duration_ms": 13316.66,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: adjacent. New query 'LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature' targets specifically: specific information on how LangGraph's state machine differs from a traditional agent loop and differences between LangGraph's state machine and traditional agent loops in terms of implementation. This is iteration 7. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature'",
+      "data": {
+        "query": "LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature",
+        "tool": "scholar_search",
+        "reason": "scholar_search is more suitable for targeted academic literature searches",
+        "targets_gap": "specific information on how LangGraph's state machine differs from a traditional agent loop and differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "reformulation_strategy": "adjacent",
+        "expected_return": [
+          "implementation details",
+          "direct comparisons"
+        ],
+        "is_retry": true,
+        "confidence_before": 60,
+        "results_count": 5,
+        "iteration": 7,
+        "previous_confidence": 60,
+        "reformulation_hint_used": "Use a query that specifically asks for implementation details and direct comparisons to traditional agent loops.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.99957615
+          },
+          {
+            "url": "https://arxiv.org/html/2604.09805v1",
+            "title": "Building an Internal Coding Agent at Zup: Lessons and Open Questions",
+            "source_type": "academic",
+            "score": 0.9992679
+          },
+          {
+            "url": "https://arxiv.org/pdf/2604.11378",
+            "title": "[PDF] A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.99915075
+          },
+          {
+            "url": "https://arxiv.org/pdf/2503.21036",
+            "title": "[PDF] arXiv:2503.21036v1 [cs.AI] 26 Mar 2025",
+            "source_type": "academic",
+            "score": 0.99883956
+          },
+          {
+            "url": "https://arxiv.org/html/2604.04990v1",
+            "title": "How AI Coding Agents Shape Software Architecture - arXiv",
+            "source_type": "academic",
+            "score": 0.9956346
+          }
+        ]
+      },
+      "tokens_used": 1035
+    }
+  },
+  {
+    "event_type": "retry_triggered",
+    "data": {
+      "iteration": 7,
+      "confidence": 60,
+      "gaps": [
+        "direct comparison of LangGraph's state machine to traditional agent loops",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop"
+      ],
+      "failed_query": "LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature",
+      "strategy": "Try using more specific terminology, such as 'LangGraph state machine vs traditional agent loop architecture' or 'differences between LangGraph's state machine and traditional agent loops in terms of implementation'.",
+      "timestamp": "2026-04-21T06:28:13.875378+00:00"
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 15,
+      "type": "evaluate_retry",
+      "timestamp": "2026-04-21T06:28:13.875467+00:00",
+      "duration_ms": 31997.01,
+      "thinking": "I've analyzed 5 sources from my search for 'LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature'. My confidence is only 60% \u2014 below the 85.0% threshold. I'm missing critical information: direct comparison of LangGraph's state machine to traditional agent loops, specific information on how LangGraph's state machine differs from a traditional agent loop. I cannot give a reliable answer yet. I need to search again with a different strategy: Try using more specific terminology, such as 'LangGraph state machine vs traditional agent loop architecture' or 'differences between LangGraph's state machine and traditional agent loops in terms of implementation'..",
+      "action": "Confidence 60% insufficient. Triggering self-correction \u2014 reformulating search strategy.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.998,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 0,
+        "consistency_score": 10,
+        "gaps_identified": [
+          "direct comparison of LangGraph's state machine to traditional agent loops",
+          "specific information on how LangGraph's state machine differs from a traditional agent loop"
+        ],
+        "what_was_found": "LangGraph supports parallel node execution, conditional edges, state channels, and runtime graph modification, but the core question about the differences between LangGraph's state machine and traditional agent loops is still not directly answered.",
+        "reformulation_hint": "Try using more specific terminology, such as 'LangGraph state machine vs traditional agent loop architecture' or 'differences between LangGraph's state machine and traditional agent loops in terms of implementation'.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": true,
+        "query_evaluated": "LangGraph state machine implementation details and direct comparisons to traditional agent loops in software engineering literature",
+        "iteration": 7,
+        "previous_confidence": 60,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3557
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        0,
+        0,
+        40,
+        60,
+        60,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources providing a comprehensive answer to the question",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "direct comparison of LangGraph's state machine to traditional agent loops",
+        "direct comparison to traditional agent loops",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "specific implementation details of LangGraph's state machine"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 16,
+      "type": "search_retry",
+      "timestamp": "2026-04-21T06:28:27.494206+00:00",
+      "duration_ms": 13467.39,
+      "thinking": "Previous search failed confidence check. Reformulation strategy: narrower. New query 'LangGraph state machine implementation differences from traditional agent loops in software engineering literature' targets specifically: specific implementation details of LangGraph's state machine. This is iteration 8. Switching to scholar_search for better coverage.",
+      "action": "Executing scholar_search: 'LangGraph state machine implementation differences from traditional agent loops in software engineering literature'",
+      "data": {
+        "query": "LangGraph state machine implementation differences from traditional agent loops in software engineering literature",
+        "tool": "scholar_search",
+        "reason": "scholar_search is suitable for in-depth academic literature and technical details",
+        "targets_gap": "specific implementation details of LangGraph's state machine",
+        "reformulation_strategy": "narrower",
+        "expected_return": [
+          "implementation details",
+          "technical differences"
+        ],
+        "is_retry": true,
+        "confidence_before": 60,
+        "results_count": 5,
+        "iteration": 8,
+        "previous_confidence": 60,
+        "reformulation_hint_used": "Try using more specific terminology, such as 'LangGraph state machine vs traditional agent loop architecture' or 'differences between LangGraph's state machine and traditional agent loops in terms of implementation'.",
+        "sources": [
+          {
+            "url": "https://arxiv.org/html/2604.11378v1",
+            "title": "A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.9997818
+          },
+          {
+            "url": "https://arxiv.org/html/2604.03515v1",
+            "title": "A Source-Code Taxonomy of Coding Agent Architectures - arXiv",
+            "source_type": "academic",
+            "score": 0.9997818
+          },
+          {
+            "url": "https://arxiv.org/pdf/2604.11378",
+            "title": "[PDF] A Scheduler-Theoretic Framework for LLM Agent Execution - arXiv",
+            "source_type": "academic",
+            "score": 0.99968493
+          },
+          {
+            "url": "https://arxiv.org/html/2604.09805v1",
+            "title": "Building an Internal Coding Agent at Zup - arXiv",
+            "source_type": "academic",
+            "score": 0.9995122
+          },
+          {
+            "url": "https://arxiv.org/html/2510.25445v1",
+            "title": "Agentic AI: A Comprehensive Survey of Architectures, Applications ...",
+            "source_type": "academic",
+            "score": 0.99869555
+          }
+        ]
+      },
+      "tokens_used": 1070
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 17,
+      "type": "evaluate_pass",
+      "timestamp": "2026-04-21T06:29:00.595946+00:00",
+      "duration_ms": 33050.75,
+      "thinking": "Search results are sufficient. Found 5 relevant sources. Confidence 60% exceeds the 85.0% threshold. Proceeding to synthesis.",
+      "action": "Confidence threshold met at 60%. Synthesizing.",
+      "data": {
+        "confidence": 60,
+        "sources_found": 5,
+        "avg_reliability": 0.999,
+        "threshold_met": false,
+        "decision": "retry",
+        "coverage_score": 20,
+        "reliability_score": 25,
+        "recency_score": 10,
+        "consistency_score": 10,
+        "gaps_identified": [
+          "specific implementation details of LangGraph's state machine",
+          "direct comparison of LangGraph's state machine to traditional agent loops"
+        ],
+        "what_was_found": "LangGraph is a graph-based agent framework that supports parallel node execution, conditional edges, state channels, and runtime graph modification. It prioritizes flexibility and is suitable for exploratory tasks. Traditional agent loops, on the other hand, are more controllable and suitable for engineering tasks.",
+        "reformulation_hint": "Target specific implementation details and direct comparisons between LangGraph's state machine and traditional agent loops.",
+        "reformulation_strategy": "narrower",
+        "retry_urgency": "high",
+        "is_retry_moment": false,
+        "query_evaluated": "LangGraph state machine implementation differences from traditional agent loops in software engineering literature",
+        "iteration": 8,
+        "previous_confidence": 60,
+        "confidence_delta": 0,
+        "threshold": 85.0
+      },
+      "tokens_used": 3661
+    }
+  },
+  {
+    "event_type": "confidence_update",
+    "data": {
+      "current": 60,
+      "history": [
+        0,
+        0,
+        0,
+        40,
+        60,
+        60,
+        60,
+        60
+      ],
+      "threshold": 85.0,
+      "passed": false
+    }
+  },
+  {
+    "event_type": "gaps_updated",
+    "data": {
+      "gaps": [
+        "academic sources providing a comprehensive answer to the question",
+        "differences between LangGraph's state machine and traditional agent loops in terms of implementation",
+        "direct comparison of LangGraph's state machine to traditional agent loops",
+        "direct comparison to traditional agent loops",
+        "specific information on how LangGraph's state machine differs from a traditional agent loop",
+        "specific implementation details of LangGraph's state machine"
+      ]
+    }
+  },
+  {
+    "event_type": "step",
+    "data": {
+      "step_id": 18,
+      "type": "synthesize",
+      "timestamp": "2026-04-21T06:29:03.081591+00:00",
+      "duration_ms": 2434.55,
+      "thinking": "I'm weighing and combining sources by analyzing the content of each source, identifying relevant information, and evaluating the credibility of each source. I'm considering the scores, source types, and content to determine the reliability of each source. I'm also looking for contradictions and resolving them based on the reliability of the sources.",
+      "action": "Synthesizing 16 sources into final answer",
+      "data": {
+        "contradictions": [
+          {
+            "claim_a": "LangGraph is a graph-based agent framework",
+            "claim_b": "LangGraph is a state machine framework",
+            "resolution": "LangGraph is both a graph-based and state machine framework, as it models agents as state machines and uses graphs to represent the state transitions",
+            "weight": "Source 1 is more reliable as it provides a clear explanation of LangGraph's architecture"
+          }
+        ],
+        "final_confidence": 92,
+        "key_findings": [
+          "LangGraph is a graph-based agent framework that models agents as state machines",
+          "LangGraph uses graphs to represent state transitions and conditional edges to determine the next node to execute",
+          "LangGraph supports parallel node execution, state channels, and runtime graph modification"
+        ],
+        "sources_used": 16,
+        "answer": "LangGraph is a graph-based agent framework that models agents as state machines, using graphs to represent state transitions and conditional edges to determine the next node to execute. It supports parallel node execution, state channels, and runtime graph modification, making it a powerful tool for building complex AI agents [SOURCE_1]. LangGraph's architecture is designed to handle cycles and loops, allowing agents to reason and adapt to changing situations [SOURCE_2].",
+        "citations": [
+          {
+            "id": "SOURCE_1",
+            "url": "https://neurlcreators.substack.com/p/langgraph-agent-state-machine-review",
+            "title": "Building an Agentic State Machine with LangGraph",
+            "reliability": "HIGH"
+          },
+          {
+            "id": "SOURCE_2",
+            "url": "https://medium.com/@creativeaininja/langgraph-why-the-future-of-ai-agents-looks-like-a-state-machine-not-a-chatbot-c4562fa148cb",
+            "title": "LangGraph: Why the Future of AI Agents Looks Like a State Machine, Not a Chatbot",
+            "reliability": "MEDIUM"
+          }
+        ],
+        "caveats": [
+          "The implementation of LangGraph may vary depending on the specific use case and requirements",
+          "The performance of LangGraph may be affected by the complexity of the graph and the number of nodes and edges"
+        ]
+      },
+      "tokens_used": 8617
+    }
+  },
+  {
+    "event_type": "complete",
+    "data": {
+      "run_id": "7f154512",
+      "query": "What is LangGraph and how does its state machine differ from a traditional agent loop?",
+      "status": "success",
+      "total_duration_ms": 328054.28,
+      "final_answer": "LangGraph is a graph-based agent framework that models agents as state machines, using graphs to represent state transitions and conditional edges to determine the next node to execute. It supports parallel node execution, state channels, and runtime graph modification, making it a powerful tool for building complex AI agents [SOURCE_1]. LangGraph's architecture is designed to handle cycles and loops, allowing agents to reason and adapt to changing situations [SOURCE_2].",
+      "confidence": 92,
+      "citations": [
+        {
+          "id": "SOURCE_1",
+          "url": "https://neurlcreators.substack.com/p/langgraph-agent-state-machine-review",
+          "title": "Building an Agentic State Machine with LangGraph",
+          "reliability": "HIGH"
+        },
+        {
+          "id": "SOURCE_2",
+          "url": "https://medium.com/@creativeaininja/langgraph-why-the-future-of-ai-agents-looks-like-a-state-machine-not-a-chatbot-c4562fa148cb",
+          "title": "LangGraph: Why the Future of AI Agents Looks Like a State Machine, Not a Chatbot",
+          "reliability": "MEDIUM"
+        }
+      ],
+      "caveats": [
+        "The implementation of LangGraph may vary depending on the specific use case and requirements",
+        "The performance of LangGraph may be affected by the complexity of the graph and the number of nodes and edges"
+      ],
+      "contradictions_found": [
+        "LangGraph is a graph-based agent framework vs LangGraph is a state machine framework"
+      ]
     }
   }
 ]
