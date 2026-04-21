@@ -419,7 +419,7 @@ export default function App() {
   const [iterationData, setIterationData] = useState([]);
   const [replayTarget, setReplayTarget] = useState(null);
   const [confidenceDelta, setConfidenceDelta] = useState(null);
-  const [backendUrl] = useState(import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000');
+  const [backendUrl] = useState(import.meta.env.VITE_BACKEND_URL || '');
   // ── Model selector state ──
   const [availableModels, setAvailableModels] = useState({ providers: [], active_provider: 'groq', active_model: '' });
   const [selectedProvider, setSelectedProvider] = useState('groq');
