@@ -631,21 +631,49 @@ def evaluate_results(state: AgentState) -> dict:
 
         else:
             step_type = "evaluate_pass"
-            thinking_text = (
-                f"Search results are sufficient. Found {eval_data.get('sources_found', 0)} "
-                f"relevant sources. Confidence {eval_data['confidence']}% exceeds "
-                f"the {settings.confidence_threshold}% threshold. Proceeding to synthesis."
-            )
-            action_text = (
-                f"Confidence threshold met at {eval_data['confidence']}%. Synthesizing."
-            )
             retry_event = None
+            threshold_actually_met = bool(eval_data.get("threshold_met", False))
+            confidence_value = eval_data["confidence"]
 
-            log.info(
-                "node.evaluate_results.threshold_met",
-                confidence=eval_data["confidence"],
-                iteration=iteration,
-            )
+            if threshold_actually_met:
+                thinking_text = (
+                    f"Search results are sufficient. Found {eval_data.get('sources_found', 0)} "
+                    f"relevant sources. Confidence {confidence_value}% meets "
+                    f"the {settings.confidence_threshold}% threshold. Proceeding to synthesis."
+                )
+                action_text = (
+                    f"Confidence threshold met at {confidence_value}%. Synthesizing."
+                )
+                log.info(
+                    "node.evaluate_results.threshold_met",
+                    confidence=confidence_value,
+                    iteration=iteration,
+                )
+            else:
+                # Fell through to pass-branch because iteration >= max_iterations.
+                # Surface this honestly rather than pretending the threshold was hit.
+                gaps_preview = (
+                    ", ".join(gaps_identified[:2])
+                    if gaps_identified else "none clearly identified"
+                )
+                thinking_text = (
+                    f"Reached the {settings.max_iterations}-iteration cap at "
+                    f"confidence {confidence_value}%, below the "
+                    f"{settings.confidence_threshold}% threshold. "
+                    f"Outstanding gaps: {gaps_preview}. "
+                    f"Synthesizing the best available answer from what was retrieved, "
+                    f"with caveats."
+                )
+                action_text = (
+                    f"Max iterations reached. Force-synthesizing at "
+                    f"{confidence_value}% confidence with caveats."
+                )
+                log.info(
+                    "node.evaluate_results.max_iterations_cap",
+                    confidence=confidence_value,
+                    iteration=iteration,
+                    gaps=gaps_identified[:3],
+                )
 
         step = ThinkingStep(
             step_id=step_id,
