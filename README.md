@@ -28,6 +28,30 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 
 ---
 
+## 🤖 Built with Claude Code
+
+This project was built in collaboration with [Claude Code](https://claude.com/claude-code),
+Anthropic's official CLI coding agent. Sessions across **2026-04-20 → 2026-04-22**
+produced (and iteratively refactored) the pieces below:
+
+- **Agent graph** — LangGraph nodes in [`agent/nodes.py`](./agent/nodes.py), the
+  self-correction loop, confidence scoring, and inline-citation enforcement.
+- **Auth layer** — JWT (HS256) issuance, bcrypt password hashing, and the
+  `get_current_user` / `get_optional_user` FastAPI dependencies.
+- **Persistence** — SQLAlchemy async models, the `postgres://` →
+  `postgresql+asyncpg://` URL normaliser, and the Render → Neon migration.
+- **Tests** — the 18-case pytest suite (auth · health · history) with an
+  isolated per-test in-memory SQLite fixture.
+- **Infra** — the `Dockerfile`, Railway deploy wiring, Render native-Python
+  fallback, and GitHub Actions CI for both repos.
+- **Docs** — this README, [`DEPLOYMENT.md`](./DEPLOYMENT.md), and the
+  architecture diagrams below.
+
+Commits are authored by the project owner; Claude Code was used as a
+pair-programmer throughout, not as a ghostwriter.
+
+---
+
 ## 🏗️ System Architecture
 
 Top-level components and the wire between them. The **browser** only ever talks
