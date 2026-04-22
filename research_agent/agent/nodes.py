@@ -520,6 +520,65 @@ def evaluate_results(state: AgentState) -> dict:
 
         parsed = parse_llm_json(response.content)
         eval_data = parsed["data"]
+
+        # ── Post-LLM gap validation ──
+        # Free-tier LLMs sometimes fabricate gaps the user never asked for
+        # ("no population statistics", "no sector breakdown") even when the
+        # prompt forbids it. Strip such gaps here unless the original query
+        # actually mentions the term — then promote to sufficient if the
+        # evaluator still returned an answer summary.
+        original_query_lower = state["query"].lower()
+        forbidden_gap_markers = {
+            "population": "population",
+            "sector":      "sector",
+            "demographic": "demograph",
+            "economic":    "economic",
+            "gdp":         "gdp",
+            "academic source": "academic",
+            "government website": "government",
+            "post-20":     "recent",
+            "post 20":     "recent",
+            "recent data": "recent",
+            "comprehensive": "comprehensive",
+        }
+
+        def _is_fabricated_gap(gap: str) -> bool:
+            gap_l = str(gap).lower()
+            for gap_marker, query_marker in forbidden_gap_markers.items():
+                if gap_marker in gap_l and query_marker not in original_query_lower:
+                    return True
+            return False
+
+        raw_gaps = eval_data.get("gaps_identified", []) or []
+        filtered_gaps = [g for g in raw_gaps if not _is_fabricated_gap(g)]
+        if len(filtered_gaps) < len(raw_gaps):
+            dropped = [g for g in raw_gaps if _is_fabricated_gap(g)]
+            log.info(
+                "node.evaluate_results.gap_filter",
+                dropped_count=len(dropped),
+                dropped=dropped[:3],
+                kept=filtered_gaps,
+            )
+        eval_data["gaps_identified"] = filtered_gaps
+
+        # Promote to sufficient when filter emptied the gap list AND the
+        # evaluator described a real answer AND the raw confidence isn't
+        # rock-bottom (which would suggest no answer was found at all).
+        has_answer_summary = bool(str(eval_data.get("what_was_found", "")).strip())
+        if (
+            not filtered_gaps
+            and has_answer_summary
+            and eval_data.get("confidence", 0) >= 50
+            and not eval_data.get("threshold_met", False)
+        ):
+            log.info(
+                "node.evaluate_results.gap_filter_promoted",
+                original_confidence=eval_data.get("confidence"),
+                what_was_found=str(eval_data.get("what_was_found", ""))[:120],
+            )
+            eval_data["threshold_met"] = True
+            eval_data["decision"] = "sufficient"
+
         duration = (time.time() - start) * 1000
 
         is_retry_moment = (
