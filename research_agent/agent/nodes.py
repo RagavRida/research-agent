@@ -861,6 +861,20 @@ def should_continue(state: AgentState) -> str:
         )
         return "force_synthesize"
 
+    # Plateau detection: if the last 3 confidence scores are monotonically
+    # non-increasing, the agent is spinning without progress — synthesize
+    # from what we have rather than burn more iterations.
+    history = state.get("confidence_history", [])
+    if len(history) >= 3:
+        a, b, c = history[-3:]
+        if c <= b <= a:
+            log.info(
+                "should_continue.plateau_detected",
+                history=history[-5:],
+                decision="force_synthesize",
+            )
+            return "force_synthesize"
+
     log.info(
         "should_continue.retrying",
         confidence=eval_result.get("confidence"),

@@ -36,7 +36,7 @@ class Settings(BaseSettings):
     tavily_api_key: str = Field(..., env="TAVILY_API_KEY")
 
     # ── Agent Behavior ──
-    max_iterations: int = 8
+    max_iterations: int = 3
     confidence_threshold: float = 85.0
     min_sources_required: int = 3
 
