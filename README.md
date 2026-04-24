@@ -13,7 +13,7 @@
 
 **ARIA (codename: NEXUS)** implements a genuine **ReAct + Plan-and-Execute hybrid** pattern with **real self-correction**: the agent doesn't just retry — it *reasons about why it failed*, identifies specific knowledge gaps, and reformulates its search strategy accordingly.
 
-This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI backend with JWT auth + Postgres, SSE streaming, pytest + GitHub Actions CI, and a one-click Render deploy.
+This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI backend with JWT auth + Postgres, SSE streaming, pytest + GitHub Actions CI, and a live Railway (Docker) + Neon + Vercel deploy.
 
 ---
 
@@ -55,7 +55,7 @@ pair-programmer throughout, not as a ghostwriter.
 ## 🏗️ System Architecture
 
 Top-level components and the wire between them. The **browser** only ever talks
-to Vercel (the landing) and Render (the API). Secrets never cross into the
+to Vercel (the landing) and Railway (the API). Secrets never cross into the
 browser; Postgres, OpenRouter, and Tavily are backend-only.
 
 ```mermaid
@@ -66,9 +66,12 @@ flowchart LR
         Landing["aria-landing<br/>/, /signin, /signup"]
     end
 
-    subgraph Render["☁️ Render"]
+    subgraph Railway["☁️ Railway"]
         API["FastAPI<br/>Docker · Python 3.11"]
-        DB[("Postgres<br/>managed")]
+    end
+
+    subgraph Neon["☁️ Neon"]
+        DB[("Postgres<br/>serverless")]
     end
 
     subgraph External["External APIs"]
@@ -96,7 +99,7 @@ sequenceDiagram
     autonumber
     participant B as Browser
     participant V as Vercel (landing)
-    participant A as Render (FastAPI)
+    participant A as Railway (FastAPI)
     participant P as Postgres
     participant L as OpenRouter
     participant T as Tavily
@@ -221,7 +224,7 @@ sequenceDiagram
     U->>P: "What are the latest breakthroughs in quantum computing?"
     P->>S: Subtasks + Strategy
     
-    loop Self-Correction Loop (max 8 iterations)
+    loop Self-Correction Loop (max 3 iterations)
         S->>E: Search results + source metadata
         E->>E: Score confidence (coverage 40 + reliability 30 + recency 15 + consistency 15)
         
@@ -234,7 +237,7 @@ sequenceDiagram
             E->>SC: threshold_met=true
             SC->>SY: SYNTHESIZE
         else Max iterations reached
-            E->>SC: iteration >= 8
+            E->>SC: iteration >= 3
             SC->>SY: FORCE_SYNTHESIZE (safety stop)
         end
     end
@@ -259,8 +262,8 @@ sequenceDiagram
 | **Frontend** | React 19 + Vite 6 + TypeScript + Tailwind v4 | Landing + auth + live thinking log |
 | **State Management** | LangGraph TypedDict | 25+ typed fields with append-only accumulators |
 | **Logging** | structlog (JSON) | Structured event logging throughout pipeline |
-| **Testing** | pytest + pytest-asyncio + httpx.TestClient | 12 tests, fresh in-memory DB per case |
-| **CI/CD** | GitHub Actions → Render (Docker) + Vercel | Auto-deploy on push to `main` |
+| **Testing** | pytest + pytest-asyncio + httpx.TestClient | 18 tests, fresh in-memory DB per case |
+| **CI/CD** | GitHub Actions → Railway (Docker, manual `railway up`) + Vercel (auto) | `pytest -q` + `tsc --noEmit` + `vite build` on every push |
 
 ---
 
@@ -506,7 +509,7 @@ All backend config lives in `research_agent/.env`. Full table:
 | Variable | Required | Default | Notes |
 |----------|----------|---------|-------|
 | `TAVILY_API_KEY` | ✅ | — | Powers web/scholar/news search. Free 1k/mo at tavily.com |
-| `LLM_PROVIDER` | ✅ | `openrouter` | One of `openrouter` \| `gemini` \| `groq` |
+| `LLM_PROVIDER` | ✅ | `gemini` | One of `gemini` \| `openrouter` \| `groq` (live prod runs `gemini`) |
 | `OPENROUTER_API_KEY` | if provider=openrouter | — | Single key for Gemini/DeepSeek/Llama/Claude/GPT |
 | `OPENROUTER_MODEL_FAST` | optional | `google/gemini-2.0-flash-exp:free` | Fast-path model |
 | `OPENROUTER_MODEL_PRO` | optional | `deepseek/deepseek-chat-v3.1:free` | Synthesis model |
@@ -557,7 +560,8 @@ test, so JWT + bcrypt + SQLAlchemy are exercised end-to-end with zero shared
 state. Current coverage:
 
 - `test_auth.py` — 10 cases (signup 201/409/422, signin 200/401×2, me 401×2/200, email case-norm)
-- `test_health.py` — health + agent config smoke
+- `test_health.py` — 2 cases (health + agent config smoke)
+- `test_history.py` — 6 cases (paginated list, cross-user 404, delete 204)
 
 Runs in ~3s; CI does the same on every push to `main` (`.github/workflows/ci.yml`).
 
@@ -565,29 +569,40 @@ Runs in ~3s; CI does the same on every push to `main` (`.github/workflows/ci.yml
 
 ## ☁️ Deploy
 
-### Backend → Render (one click)
+Full step-by-step in [`DEPLOYMENT.md`](./DEPLOYMENT.md). Short version:
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/RagavRida/research-agent)
+### Backend → Railway (Docker)
 
-The [`render.yaml`](./render.yaml) blueprint provisions:
-- `aria-db` — managed Postgres (free plan)
-- `research-agent-api` — Docker web service with healthcheck at `/api/health`
-- Auto-generated `JWT_SECRET`
-- `DATABASE_URL` wired from the DB's connection string
-- Prompts once for `OPENROUTER_API_KEY` + `TAVILY_API_KEY`
+```bash
+railway link                         # pick or create a project
+railway up                           # builds Dockerfile, deploys
+railway domain                       # generate a public *.up.railway.app URL
+```
 
-Render auto-deploys on every push to `main`.
+Railway builds the repo-root `Dockerfile` and runs it as a web service;
+[`railway.json`](./railway.json) holds the builder + `/api/health`
+healthcheck + restart policy. **Deploys are manual** — `git push` alone
+does NOT redeploy; re-run `railway up`.
+
+### Database → Neon (serverless Postgres)
+
+Paste the Neon connection string into `DATABASE_URL` on Railway. The app
+rewrites `postgres://` → `postgresql+asyncpg://` automatically. Use the
+**direct** (non-pooler) endpoint with `?ssl=require` — asyncpg rejects
+`sslmode=require` with a TypeError.
 
 ### Frontend → Vercel
 
 ```bash
 cd aria-landing
 vercel --prod
-# then set VITE_API_BASE_URL to your Render URL in the Vercel dashboard
+# set VITE_API_BASE_URL in the Vercel dashboard → your Railway URL
 ```
 
-CORS on the backend already accepts any `*.vercel.app` subdomain via
-`allow_origin_regex`, so preview URLs work without config changes.
+[`vercel.json`](https://github.com/RagavRida/aria-landing/blob/main/vercel.json)
+proxies `/api/*` to the Railway backend so the browser stays same-origin.
+CORS on the backend accepts any `*.vercel.app` subdomain via
+`allow_origin_regex`, so preview URLs work without extra config.
 
 ---
 
@@ -616,10 +631,11 @@ research-agent/
 │   ├── services/
 │   │   ├── auth.py             # bcrypt hash, JWT mint/verify, get_current_user dep
 │   │   └── logger.py           # Structured logging
-│   └── tests/                  # pytest — 12 cases, fresh DB per test
+│   └── tests/                  # pytest — 18 cases, fresh DB per test
 │       ├── conftest.py
 │       ├── test_auth.py
-│       └── test_health.py
+│       ├── test_health.py
+│       └── test_history.py
 ├── aria/                       # React research-app (legacy — merged into aria-landing/src/pages/Research.tsx)
 ├── .github/workflows/ci.yml    # pytest on every push/PR
 ├── Dockerfile                  # Repo-root Docker build (Railway)
@@ -638,7 +654,7 @@ research-agent/
 
 MIT License
 
-Copyright (c) 2024
+Copyright (c) 2026
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
