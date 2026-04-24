@@ -22,7 +22,8 @@ This repo is the **full-stack build**: self-correcting LangGraph agent, FastAPI 
 | 📂 **Backend repo** | [github.com/RagavRida/research-agent](https://github.com/RagavRida/research-agent) |
 | 🎨 **Landing repo** | [github.com/RagavRida/aria-landing](https://github.com/RagavRida/aria-landing) |
 | 🌐 **Live app (prod)** | https://aria-landing-one.vercel.app — landing + signup + research UI at `/app` |
-| 🔌 **API (prod)** | https://research-agent-production-d1bb.up.railway.app (`/docs` for OpenAPI) — Docker on Railway, also proxied at `/api/*` |
+| 🔌 **API (prod)** | https://research-agent-production-d1bb.up.railway.app — Docker on Railway; also proxied at `aria-landing-one.vercel.app/api/*` |
+| 📘 **Swagger UI** | https://aria-landing-one.vercel.app/api/docs · [`/api/redoc`](https://aria-landing-one.vercel.app/api/redoc) · [`/api/openapi.json`](https://aria-landing-one.vercel.app/api/openapi.json) |
 | 📊 **Agent trace** | [`agent_trace.json`](./agent_trace.json) — real 42-event SSE capture from the live agent: 7 self-correction retries, 8 confidence updates, ends at 92% confidence with citations |
 | 🚀 **Deploy your own** | See [`DEPLOYMENT.md`](./DEPLOYMENT.md) — Railway (Docker backend) + Neon (serverless Postgres) + Vercel (frontend) |
 
@@ -475,7 +476,7 @@ cd research_agent
 cp .env.example .env                 # fill OPENROUTER_API_KEY + TAVILY_API_KEY
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
-python3 main.py                      # → http://localhost:8000 (docs at /docs)
+python3 main.py                      # → http://localhost:8000 (Swagger at /api/docs)
 ```
 
 First boot auto-creates `aria.db` (SQLite) and the `users` table. For Postgres

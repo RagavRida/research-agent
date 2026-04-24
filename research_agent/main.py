@@ -41,8 +41,9 @@ app = FastAPI(
         "and streamed thinking steps via SSE."
     ),
     version="2.4.0",
-    docs_url="/docs",
-    redoc_url="/redoc",
+    docs_url="/api/docs",
+    redoc_url="/api/redoc",
+    openapi_url="/api/openapi.json",
 )
 
 # ── CORS middleware ──
